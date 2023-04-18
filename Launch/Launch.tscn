@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Prototype Sprites/launch-prototype.png" type="Texture" id=1]
+[ext_resource path="res://Prototype Sprites/player-prototype.png" type="Texture" id=2]
+[ext_resource path="res://Boulder/Boulder.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Launch/Launch.gd" type="Script" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 124, 300 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 517, 29 )
+
+[node name="Launch" type="Node2D"]
+script = ExtResource( 4 )
+
+[node name="Background" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+centered = false
+
+[node name="Player-prototype" type="Sprite" parent="."]
+position = Vector2( 224, 480 )
+texture = ExtResource( 2 )
+
+[node name="Boulder" parent="." instance=ExtResource( 3 )]
+position = Vector2( 256, 448 )
+
+[node name="BeginFlightArea" type="Area2D" parent="."]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BeginFlightArea"]
+position = Vector2( 900, 300 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="BeginFlightArea"]
+position = Vector2( 512, 24 )
+shape = SubResource( 2 )

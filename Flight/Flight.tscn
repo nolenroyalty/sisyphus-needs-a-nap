@@ -1,0 +1,101 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Boulder/Boulder.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Flight/Tiles/Slope.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Flight/Flight.gd" type="Script" id=4]
+
+[node name="Flight" type="Node2D"]
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_horizontal_guides_": [ 389.0 ],
+"_edit_vertical_guides_": [ 1023.0 ]
+}
+
+[node name="Boulder" parent="." instance=ExtResource( 2 )]
+position = Vector2( -167, 183 )
+
+[node name="Camera2D" type="Camera2D" parent="Boulder"]
+position = Vector2( 1, 2 )
+current = true
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
+drag_margin_left = 0.4
+drag_margin_top = 0.4
+drag_margin_right = 0.4
+drag_margin_bottom = 0.4
+
+[node name="BouncePlayer" type="AudioStreamPlayer2D" parent="Boulder"]
+
+[node name="Slopes" type="Node2D" parent="."]
+
+[node name="Slope" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 79, 169 )
+
+[node name="Slope3" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 462, 42 )
+
+[node name="Slope2" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( -305, 297 )
+
+[node name="Slope4" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 1230, -213 )
+
+[node name="Slope5" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 1614, -341 )
+
+[node name="Slope6" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 846, -86 )
+
+[node name="Slope7" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 2381, -596 )
+
+[node name="Slope8" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 2764, -723 )
+
+[node name="Slope9" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 1997, -468 )
+
+[node name="Slope10" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 3532, -978 )
+
+[node name="Slope11" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 3916, -1105 )
+
+[node name="Slope12" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 3148, -851 )
+
+[node name="Slope13" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 4683, -1361 )
+
+[node name="Slope14" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 5067, -1488 )
+
+[node name="Slope15" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 4300, -1233 )
+
+[node name="Slope16" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 5835, -1744 )
+
+[node name="Slope17" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 6219, -1872 )
+
+[node name="Slope18" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 5451, -1616 )
+
+[node name="Slope19" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 6987, -2128 )
+
+[node name="Slope20" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 7371, -2256 )
+
+[node name="Slope21" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 6603, -2000 )
+
+[node name="Slope22" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 8139, -2512 )
+
+[node name="Slope23" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 8523, -2640 )
+
+[node name="Slope24" parent="Slopes" instance=ExtResource( 3 )]
+position = Vector2( 7755, -2384 )
