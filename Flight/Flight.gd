@@ -106,7 +106,7 @@ func launch_or_freeze_boulder():
 
 func continue_pressed():
 	scoreScreen.visible = false
-	launch_or_freeze_boulder()
+	SceneChange.set_scene(SceneChange.SCENE_SHOP)
 
 func _physics_process(delta): 
 	if Input.is_action_just_pressed("launch_boulder"):

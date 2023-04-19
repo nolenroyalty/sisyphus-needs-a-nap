@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Shop/PurchaseButton.gd" type="Script" id=1]
+[ext_resource path="res://Themes/Default.tres" type="Theme" id=2]
+
+[node name="PurchaseButton" type="Button"]
+margin_right = 4.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 70, 25 )
+focus_mode = 0
+theme = ExtResource( 2 )
+custom_colors/font_color_disabled = Color( 0, 0, 0, 0.45098 )
+text = "Item: Level"
+script = ExtResource( 1 )
+KIND = "Block"

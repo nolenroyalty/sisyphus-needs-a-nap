@@ -39,6 +39,7 @@ config/icon="res://icon.png"
 [autoload]
 
 State="*res://State/State.gd"
+SceneChange="*res://Util/SceneChange.gd"
 
 [display]
 

@@ -126,7 +126,6 @@ margin_right = 50.0
 margin_bottom = 14.0
 text = "12345"
 align = 2
-percent_visible = -0.2
 
 [node name="ContinueButton" type="Button" parent="Control/VBoxContainer"]
 margin_top = 144.0
