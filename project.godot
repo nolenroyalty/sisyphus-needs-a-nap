@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "FlightScore",
+"language": "GDScript",
+"path": "res://Flight/FlightScore.gd"
+} ]
+_global_script_class_icons={
+"FlightScore": ""
+}
+
 [application]
 
 config/name="Sisyphus Needs a Nap"

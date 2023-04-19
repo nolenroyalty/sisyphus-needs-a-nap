@@ -21,10 +21,10 @@ var frozen_count = 0
 enum SUPERBOUNCE_STATE {NONE, BOUNCING}
 var superbounce_frames_remaining = 0
 var superbounce_state = SUPERBOUNCE_STATE.NONE
+var flightscore : FlightScore
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	flightscore = FlightScore.new(boulder)
 
 func play_bounce_sound(super : bool):
 	if super: audioStreamPlayer.stream = load("res://sounds/super1.wav")
@@ -91,7 +91,6 @@ func rotate_boulder():
 	var is_positive = velocity.x >= 0
 	var speed = abs(velocity.x)
 	var degrees = MIN_ROTATION + (MAX_ROTATION - MIN_ROTATION) * (min(speed, MAX_EXPECTED_SPEED_FOR_ROTATION) / MAX_EXPECTED_SPEED_FOR_ROTATION)
-	print(degrees)
 	if is_positive: boulder.rotation_degrees += degrees
 	else: boulder.rotation_degrees -= degrees
 
@@ -111,6 +110,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("superbounce"): handle_superbounce_pressed()
 
 	tick_superbounce_state()
+	flightscore.tick(boulder)
 	rotate_boulder()
 
 	var collision = boulder.move_and_collide(velocity * delta)
@@ -120,5 +120,7 @@ func _physics_process(delta):
 		handle_bounce(collision, superbounced)
 		reset_superbounce_state()
 		frozen = check_if_rolling_downhill_after_collision()
+		flightscore.print_for_debugging()
+		if frozen: flightscore.reset_scores(boulder)
 	else:
 		apply_gravity(delta)

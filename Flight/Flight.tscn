@@ -1,5 +1,6 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
+[ext_resource path="res://Launch/Launch.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Boulder/Boulder.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Flight/Tiles/Slope.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Flight/Flight.gd" type="Script" id=4]
@@ -12,7 +13,7 @@ __meta__ = {
 }
 
 [node name="Boulder" parent="." instance=ExtResource( 2 )]
-position = Vector2( -167, 183 )
+position = Vector2( -1236, 454 )
 
 [node name="Camera2D" type="Camera2D" parent="Boulder"]
 position = Vector2( 1, 2 )
@@ -99,3 +100,7 @@ position = Vector2( 8523, -2640 )
 
 [node name="Slope24" parent="Slopes" instance=ExtResource( 3 )]
 position = Vector2( 7755, -2384 )
+
+[node name="Launch" parent="." instance=ExtResource( 1 )]
+position = Vector2( -1521, -39 )
+z_index = -1
