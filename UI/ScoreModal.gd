@@ -3,6 +3,7 @@ extends CanvasLayer
 class_name ScoreScreen
 
 signal continue_pressed
+signal tween_components_completed
 
 onready var height_label : TweenedLabel = $Control/VBoxContainer/HBoxContainer/VBoxContainer2/HeightLabel
 onready var distance_label : TweenedLabel = $Control/VBoxContainer/HBoxContainer/VBoxContainer2/DistanceLabel
@@ -10,12 +11,66 @@ onready var time_label : TweenedLabel = $Control/VBoxContainer/HBoxContainer/VBo
 onready var continue_button : Button = $Control/VBoxContainer/ContinueButton
 onready var background : ColorRect = $Control/Background
 onready var vbox : VBoxContainer = $Control/VBoxContainer
+onready var calmness_text : Label = $Control/VBoxContainer/CalmContainer/Text/Text
+onready var calmness_value : Label = $Control/VBoxContainer/CalmContainer/Value/Value
+onready var calmness_tween : Tween = $CalmnessTween
 
-func tween_scores(h, d, t):
+var was_tweening = false
+
+func linear_then_sqrt(value, divisor, threshold) -> int:
+	value = min(value, threshold) + sqrt(value)
+	value /= divisor
+	return int(value)
+
+func linear(value, divisor):
+	return int(value / divisor)
+
+func heightscore(height) -> int:
+	return linear_then_sqrt(height, 10, 1000)
+
+func distancescore(distance) -> int:
+	return linear_then_sqrt(distance, 40, 4000)
+
+func timescore(time) -> int:
+	return linear(time, 50)
+
+# Feels a bit like this should live somewhere else, but w.e.
+func compute_calmness(h, d, t) -> int:
+	return heightscore(h) + distancescore(d) + timescore(t)
+
+func tween_components(h, d, t):
 	height_label.tween_score(h)
 	distance_label.tween_score(d)
 	time_label.tween_score(t)
-	
+
+func is_tweening():
+	return height_label.is_tweening() or distance_label.is_tweening() or time_label.is_tweening()
+
+func set_calmness_visibility(percent : float):
+	var amount = percent
+	calmness_text.modulate.a = amount
+	calmness_value.modulate.a = amount
+
+func tween_in_calmness():
+	var _ignore = calmness_tween.interpolate_method(self,
+	 "set_calmness_visibility",
+	  0.0, 
+	  1.0, 
+	  1.5, 
+	  Tween.TRANS_LINEAR, 
+	  Tween.EASE_IN)
+
+	_ignore = calmness_tween.start()
+
+func tween_scores(height_, distance_, time_):
+	set_calmness_visibility(0)
+	tween_components(height_, distance_, time_)
+	var calmness = compute_calmness(height_, distance_, time_)
+	calmness_value.text = str(calmness)
+	State.add_calmness(calmness)
+	yield(self, "tween_components_completed")
+	tween_in_calmness()
+
 func continue_pressed():
 	print("continuing")
 	emit_signal("continue_pressed")
@@ -27,9 +82,13 @@ func configure_background():
 	background.rect_size.y = vbox.rect_size.y - 5
 
 func _ready():
-	continue_button.connect("pressed", self, "continue_pressed")
+	var _ignore = continue_button.connect("pressed", self, "continue_pressed")
 	configure_background()
 
-func _process(delta):
-	if height_label.is_tweening() or distance_label.is_tweening() or time_label.is_tweening():
+func _process(_delta):
+	if is_tweening():
 		configure_background()
+		was_tweening = true
+	elif was_tweening:
+		emit_signal("tween_components_completed")
+		was_tweening = false

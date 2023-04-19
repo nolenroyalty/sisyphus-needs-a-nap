@@ -37,7 +37,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = 14.0
 margin_bottom = -20.0
-custom_constants/separation = 37
+custom_constants/separation = 22
 
 [node name="Title" type="Label" parent="Control/VBoxContainer"]
 margin_right = 103.0
@@ -47,9 +47,9 @@ custom_fonts/font = SubResource( 1 )
 text = "Launch Complete"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer"]
-margin_top = 51.0
+margin_top = 36.0
 margin_right = 103.0
-margin_bottom = 101.0
+margin_bottom = 86.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/VBoxContainer/HBoxContainer"]
 margin_right = 45.0
@@ -100,9 +100,39 @@ margin_right = 54.0
 margin_bottom = 50.0
 text = "0"
 
-[node name="ContinueButton" type="Button" parent="Control/VBoxContainer"]
-margin_top = 138.0
+[node name="CalmContainer" type="HBoxContainer" parent="Control/VBoxContainer"]
+margin_top = 108.0
 margin_right = 103.0
-margin_bottom = 156.0
+margin_bottom = 122.0
+
+[node name="Text" type="VBoxContainer" parent="Control/VBoxContainer/CalmContainer"]
+margin_right = 49.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+
+[node name="Text" type="Label" parent="Control/VBoxContainer/CalmContainer/Text"]
+margin_right = 49.0
+margin_bottom = 14.0
+text = "Calmness"
+
+[node name="Value" type="VBoxContainer" parent="Control/VBoxContainer/CalmContainer"]
+margin_left = 53.0
+margin_right = 103.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+
+[node name="Value" type="Label" parent="Control/VBoxContainer/CalmContainer/Value"]
+margin_right = 50.0
+margin_bottom = 14.0
+text = "12345"
+align = 2
+percent_visible = -0.2
+
+[node name="ContinueButton" type="Button" parent="Control/VBoxContainer"]
+margin_top = 144.0
+margin_right = 103.0
+margin_bottom = 162.0
 theme = ExtResource( 2 )
 text = "Continue"
+
+[node name="CalmnessTween" type="Tween" parent="."]

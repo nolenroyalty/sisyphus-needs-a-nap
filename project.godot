@@ -36,6 +36,10 @@ config/name="Sisyphus Needs a Nap"
 run/main_scene="res://Flight/Flight.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+State="*res://State/State.gd"
+
 [display]
 
 window/size/width=384
