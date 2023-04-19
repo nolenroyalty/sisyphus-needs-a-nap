@@ -1,6 +1,8 @@
 extends Button
 
 signal purchased
+signal hovered(cost)
+signal unhovered(cost)
 const Config = preload("res://Shop/Config.gd")
 export(String, "Block") var KIND
 
@@ -33,8 +35,16 @@ func determine_kind():
 		"Block": kind = Config.ITEM.BLOCK
 		_: assert(false, "Invalid kind: %s" % KIND)
 
+func hover():
+	emit_signal("hovered", current_cost)
+
+func unhover():
+	emit_signal("unhovered", 0)
+
 func _ready():
 	determine_kind()
 	configure()
 	var _ignore = self.connect("pressed", self, "purchase")
+	_ignore = self.connect("mouse_entered", self, "hover")
+	_ignore = self.connect("mouse_exited", self, "unhover")
 

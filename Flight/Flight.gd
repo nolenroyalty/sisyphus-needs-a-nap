@@ -1,6 +1,6 @@
 extends Node2D
 
-onready var boulder = $Boulder
+
 export var GRAVITY = 100
 export var MAX_GRAVITY = 100
 export var X_BOUNCE_PENALTY = 0.1
@@ -13,7 +13,9 @@ export var MIN_ROTATION = 1.0
 export var MAX_ROTATION = 10.0
 const MAX_EXPECTED_SPEED_FOR_ROTATION = 250
 
+onready var boulder = $Boulder
 onready var scoreScreen = $ScoreScreen
+onready var player = $Launch/Player
 onready var audioStreamPlayer : AudioStreamPlayer2D = $Boulder/BouncePlayer
 
 var velocity = Vector2()
@@ -24,9 +26,15 @@ var superbounce_frames_remaining = 0
 var superbounce_state = SUPERBOUNCE_STATE.NONE
 var flightscore : FlightScore
 
+func set_up_for_current_state():
+	var platform_offset = 64 * State.block_height
+	boulder.position.y -= platform_offset
+	player.position.y -= platform_offset
+
 func _ready():
 	flightscore = FlightScore.new(boulder)
 	scoreScreen.connect("continue_pressed", self, "continue_pressed")
+	set_up_for_current_state()
 
 func play_bounce_sound(super : bool):
 	if super: audioStreamPlayer.stream = load("res://sounds/super1.wav")

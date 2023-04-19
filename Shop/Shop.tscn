@@ -14,42 +14,43 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 2 )
 
-[node name="CenterContainer" type="CenterContainer" parent="Control"]
-anchor_right = 1.0
-margin_bottom = 14.0
+[node name="CalmAndPrice" type="VBoxContainer" parent="Control"]
+margin_left = 44.0
+margin_right = 148.0
+margin_bottom = 27.0
+custom_constants/separation = -1
 
-[node name="CalmAndPrice" type="HBoxContainer" parent="Control/CenterContainer"]
-margin_left = 127.0
-margin_right = 256.0
-margin_bottom = 14.0
-
-[node name="Calmness" type="Label" parent="Control/CenterContainer/CalmAndPrice"]
-margin_right = 83.0
+[node name="Calmness" type="Label" parent="Control/CalmAndPrice"]
+margin_right = 104.0
 margin_bottom = 14.0
 grow_horizontal = 0
-text = "Calmness: 755 |"
-align = 1
+text = "Calmness: 755"
 
-[node name="Price" type="Label" parent="Control/CenterContainer/CalmAndPrice"]
-margin_left = 87.0
-margin_right = 129.0
-margin_bottom = 14.0
+[node name="Price" type="Label" parent="Control/CalmAndPrice"]
+margin_top = 13.0
+margin_right = 104.0
+margin_bottom = 27.0
 grow_horizontal = 0
 text = "Price: 0"
-align = 1
 
-[node name="Grid" type="GridContainer" parent="Control"]
+[node name="CenterContainer" type="CenterContainer" parent="Control"]
+anchor_right = 1.0
+margin_left = 45.0
+margin_right = -207.0
+margin_bottom = 27.0
+
+[node name="Buttons" type="GridContainer" parent="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 50.0
-margin_top = 24.0
+margin_left = 45.0
+margin_top = 38.0
 margin_right = -50.0
 margin_bottom = -50.0
 custom_constants/vseparation = 24
 custom_constants/hseparation = 24
 columns = 2
 
-[node name="PurchaseButton" parent="Control/Grid" instance=ExtResource( 3 )]
+[node name="PurchaseButton" parent="Control/Buttons" instance=ExtResource( 3 )]
 margin_right = 70.0
 margin_bottom = 25.0
 text = "Block"
