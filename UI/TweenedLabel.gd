@@ -15,3 +15,6 @@ func _ready():
 func tween_score(score_):
 	tween_.interpolate_method(self, "set_score", 0, score_, 2.0, Tween.TRANS_LINEAR, Tween.EASE_OUT)
 	tween_.start()
+
+func is_tweening():
+	return tween_.is_active()

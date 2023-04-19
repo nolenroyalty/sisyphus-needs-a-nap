@@ -27,8 +27,8 @@ func max_distance():
 	return distance - starting_x
 
 func max_height():
-	# It would be nice if this could account for the slope and just be "height off the ground"
-	# instead of the sealevel-style height that it's currently doing.
+    # It would be nice if this could account for the slope and just be "height off the ground"
+    # instead of the sealevel-style height that it's currently doing.
 	return starting_y - height
 
 func frames_in_the_air():

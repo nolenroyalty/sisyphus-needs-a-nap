@@ -13,6 +13,7 @@ export var MIN_ROTATION = 1.0
 export var MAX_ROTATION = 10.0
 const MAX_EXPECTED_SPEED_FOR_ROTATION = 250
 
+onready var scoreScreen = $ScoreScreen
 onready var audioStreamPlayer : AudioStreamPlayer2D = $Boulder/BouncePlayer
 
 var velocity = Vector2()
@@ -25,6 +26,7 @@ var flightscore : FlightScore
 
 func _ready():
 	flightscore = FlightScore.new(boulder)
+	scoreScreen.connect("continue_pressed", self, "continue_pressed")
 
 func play_bounce_sound(super : bool):
 	if super: audioStreamPlayer.stream = load("res://sounds/super1.wav")
@@ -102,6 +104,10 @@ func launch_or_freeze_boulder():
 		frozen = true
 		velocity = Vector2.ZERO
 
+func continue_pressed():
+	scoreScreen.visible = false
+	launch_or_freeze_boulder()
+
 func _physics_process(delta): 
 	if Input.is_action_just_pressed("launch_boulder"):
 		launch_or_freeze_boulder()
@@ -121,6 +127,11 @@ func _physics_process(delta):
 		reset_superbounce_state()
 		frozen = check_if_rolling_downhill_after_collision()
 		flightscore.print_for_debugging()
-		if frozen: flightscore.reset_scores(boulder)
+		if frozen: 
+			scoreScreen.tween_scores(flightscore.max_height(),
+			 flightscore.max_distance(),
+			 flightscore.frames_in_the_air())
+			scoreScreen.visible = true
+			flightscore.reset_scores(boulder)
 	else:
 		apply_gravity(delta)
