@@ -18,4 +18,4 @@ shape = SubResource( 1 )
 
 [node name="FloorRay" type="RayCast2D" parent="."]
 enabled = true
-collision_mask = 2
+collision_mask = 10

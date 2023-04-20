@@ -120,7 +120,7 @@ deploy_parachute={
 2d_physics/layer_1="boulder"
 2d_physics/layer_2="ground"
 2d_physics/layer_3="trigger"
-2d_physics/layer_4="pseudo-ground"
+2d_physics/layer_4="cave"
 
 [mono]
 

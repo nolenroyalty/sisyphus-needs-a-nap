@@ -31,6 +31,7 @@ var superbounce_frames_remaining = 0
 var superbounce_state = SUPERBOUNCE_STATE.NONE
 var flightscore : FlightScore
 var parachute_deployed = false
+var in_cave = false
 
 enum SOUNDS { BOUNCE, SUPERBOUNCE, PARACHUTE }
 
@@ -63,10 +64,26 @@ func set_up_for_current_state():
 	boulder.position.y -= platform_offset
 	player.position.y -= platform_offset
 
+func entered_cave():
+	print("entered cave")
+	in_cave = true
+
+func exited_cave():
+	print("exited cave")
+	in_cave = false
+
 func _ready():
 	flightscore = FlightScore.new(boulder)
 	scoreScreen.connect("continue_pressed", self, "continue_pressed")
+	# Make it easy to move the boulder around for testing purposes and then snap it
+	# back to where it needs to be when we aren't testing 
+	boulder.position = Vector2(-1230, 448)
 	set_up_for_current_state()
+
+	for terrain in $Terrain.get_children():
+		if terrain.is_in_group("cave"):
+			terrain.connect("boulder_entered", self, "entered_cave")
+			terrain.connect("boulder_exited", self, "exited_cave")
 
 func play_sound(sound):
 	# Maybe the bounce stuff here should live in the boulder scene idk.
@@ -102,15 +119,23 @@ func handle_bounce(collision : KinematicCollision2D, superbounced):
 		velocity.x *= (1 + X_BOUNCE_PENALTY)
 	
 	# Give the ball a little bit of vertical bounciness
-	var bonus = Y_BOUNCE_BONUS * (1.2 if superbounced else 1.0)
-	velocity.y *= (1 + bonus)
+	if velocity.y < 0:
+		# This can result in us bouncing more quickly in the cave when we are falling
+		# so we skip it when y is negative.
+		var bonus = Y_BOUNCE_BONUS * (1.2 if superbounced else 1.0)
+		velocity.y *= (1 + bonus)
+	
 
 func is_rolling_downhill():
-	return velocity.x < -BACKWARDS_ROLL_SPEED and velocity.y > BACKWARDS_ROLL_SPEED
-
+	if in_cave:
+		print(velocity)
+		return velocity.y < 0
+	else:
+		return velocity.x < 0
+	
 func check_if_rolling_downhill_after_collision():
-	if velocity.x < 0:
-		print("rolling downhill!")
+	if is_rolling_downhill():
+		print("rolling downhill! in cave: %s" % in_cave)
 		frozen_count += 1
 	
 	if frozen_count > 2:
