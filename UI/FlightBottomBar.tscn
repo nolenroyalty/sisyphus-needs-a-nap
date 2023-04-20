@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://UI/FlightBottomBar.gd" type="Script" id=1]
+[ext_resource path="res://UI/Sprites/ArrowRight.png" type="Texture" id=2]
+
+[node name="FlightBottomBar" type="CanvasLayer"]
+script = ExtResource( 1 )
+
+[node name="LandmarkLabel" type="Label" parent="."]
+margin_left = 264.0
+margin_top = 146.0
+margin_right = 376.0
+margin_bottom = 160.0
+grow_horizontal = 0
+text = "Cave (123)"
+align = 2
+
+[node name="LandmarkArrow" type="Sprite" parent="."]
+position = Vector2( 354, 176 )
+rotation = -1.54287
+texture = ExtResource( 2 )

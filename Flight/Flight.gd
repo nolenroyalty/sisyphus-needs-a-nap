@@ -18,11 +18,13 @@ export var PARACHUTE_MAX_GRAVITY = 50
 export var OILINESS_PENALTY_REDUCTION_FACTOR = 0.15
 export var STRENGTH_INCREASE_FACTOR = 1.3
 const MAX_EXPECTED_SPEED_FOR_ROTATION = 250
+const DISTANCE_AT_WHICH_WE_FLAG_A_LANDMARK = 1000
 
 onready var boulder = $Boulder
 onready var scoreScreen = $ScoreScreen
 onready var player = $Launch/Player
 onready var audioStreamPlayer : AudioStreamPlayer2D = $Boulder/BouncePlayer
+onready var bottom_bar : FlightBottomBar = $FlightBottomBar
 
 var velocity = Vector2()
 var frozen = true
@@ -33,6 +35,7 @@ var superbounce_state = SUPERBOUNCE_STATE.NONE
 var flightscore : FlightScore
 var parachute_deployed = false
 var in_cave = false
+var landmarks = []
 
 enum SOUNDS { BOUNCE, SUPERBOUNCE, PARACHUTE }
 
@@ -66,13 +69,13 @@ func set_up_for_current_state():
 	player.position.y -= platform_offset
 
 func entered_cave():
-	print("entered cave")
+	print("entered cave") 
 	in_cave = true
-
+	
 func exited_cave():
 	print("exited cave")
 	in_cave = false
-
+	
 func _ready():
 	flightscore = FlightScore.new(boulder)
 	scoreScreen.connect("continue_pressed", self, "continue_pressed")
@@ -85,6 +88,9 @@ func _ready():
 		if terrain.is_in_group("cave"):
 			terrain.connect("boulder_entered", self, "entered_cave")
 			terrain.connect("boulder_exited", self, "exited_cave")
+		
+		if terrain.is_in_group("landmark"):
+			landmarks.append(terrain)
 
 func play_sound(sound):
 	# Maybe the bounce stuff here should live in the boulder scene idk.
@@ -130,8 +136,10 @@ func handle_bounce(collision : KinematicCollision2D, superbounced):
 	
 
 func is_rolling_downhill():
+	if abs(velocity.x) < 1 and abs(velocity.y) < 1:
+		return true
+		
 	if in_cave:
-		print(velocity)
 		return velocity.y < 0
 	else:
 		return velocity.x < 0
@@ -193,7 +201,8 @@ func continue_pressed():
 	SceneChange.set_scene(SceneChange.SCENE_SHOP)
 
 func can_deploy_parachute():
-	return State.has_parachute and !parachute_deployed and (velocity.y > 0 or velocity.x < 0)
+	return State.has_parachute and !parachute_deployed 
+	# and (velocity.y > 0 or velocity.x < 0)
 
 func deploy_parachute():
 	parachute_deployed = true
@@ -201,6 +210,40 @@ func deploy_parachute():
 	if velocity.y > 0: 
 		velocity.y *= PARACHUTE_Y_SPEED_REDUCTION
 	play_sound(SOUNDS.PARACHUTE)
+
+
+func landmark_to_display():
+	var boulder_position = boulder.global_position
+
+	var closest_landmark = null
+	var closest_distance = null
+	var angle_from_boulder = null
+
+	for landmark in landmarks:
+		var distance = boulder_position.distance_to(landmark.landmark_position_for_distance())
+
+		if distance < DISTANCE_AT_WHICH_WE_FLAG_A_LANDMARK:
+			if landmark.landmark_name() == "Cave" and in_cave:
+				continue
+			if closest_landmark == null or distance < closest_distance:
+				closest_landmark = landmark
+				closest_distance = distance
+				var direction = boulder_position.direction_to(landmark.landmark_position_for_angle())
+				angle_from_boulder = rad2deg(direction.angle())
+	
+	if closest_landmark != null:
+		return [closest_landmark, closest_distance, angle_from_boulder]
+	return null
+
+func maybe_display_landmark():
+	var maybe_landmark = landmark_to_display()
+	if maybe_landmark != null:
+		var landmark : Node2D = maybe_landmark[0]
+		var distance : float = maybe_landmark[1]
+		var angle = maybe_landmark[2]
+		bottom_bar.display_landmark(landmark, distance, angle)
+	else:
+		bottom_bar.hide_landmark()
 
 func _physics_process(delta):
 	if Input.is_action_just_pressed("launch_boulder"):
@@ -213,6 +256,7 @@ func _physics_process(delta):
 
 	tick_superbounce_state()
 	flightscore.tick(boulder)
+	maybe_display_landmark()
 
 	if parachute_deployed:
 		pass
