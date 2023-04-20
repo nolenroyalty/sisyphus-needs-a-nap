@@ -38,3 +38,4 @@ func print_for_debugging():
 	print("max distance: ", max_distance())
 	print("max height: ", max_height())
 	print("frames in the air: ", frames_in_the_air())
+	

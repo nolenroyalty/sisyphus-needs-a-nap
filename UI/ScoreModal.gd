@@ -17,27 +17,6 @@ onready var calmness_tween : Tween = $CalmnessTween
 
 var was_tweening = false
 
-func linear_then_sqrt(value, divisor, threshold) -> int:
-	value = min(value, threshold) + sqrt(value)
-	value /= divisor
-	return int(value)
-
-func linear(value, divisor):
-	return int(value / divisor)
-
-func heightscore(height) -> int:
-	return linear_then_sqrt(height, 10, 1000)
-
-func distancescore(distance) -> int:
-	return linear_then_sqrt(distance, 40, 4000)
-
-func timescore(time) -> int:
-	return linear(time, 50)
-
-# Feels a bit like this should live somewhere else, but w.e.
-func compute_calmness(h, d, t) -> int:
-	return heightscore(h) + distancescore(d) + timescore(t)
-
 func tween_components(h, d, t):
 	height_label.tween_score(h)
 	distance_label.tween_score(d)
@@ -65,7 +44,7 @@ func tween_in_calmness():
 func tween_scores(height_, distance_, time_):
 	set_calmness_visibility(0)
 	tween_components(height_, distance_, time_)
-	var calmness = compute_calmness(height_, distance_, time_)
+	var calmness = ScoreComputation.compute_calmness(height_, distance_, time_)
 	calmness_value.text = str(calmness)
 	State.add_calmness(calmness)
 	yield(self, "tween_components_completed")

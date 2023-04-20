@@ -1,8 +1,10 @@
 extends Node
 
 var calmness = 0
-var block_height = 0
-const MAX_BLOCK_HEIGHT = 10
+var block_height : int = 0
+var oil_level = 0
+var has_parachute = false
+var strength_level = 0
 
 func add_calmness(amount : int):
 	calmness += amount

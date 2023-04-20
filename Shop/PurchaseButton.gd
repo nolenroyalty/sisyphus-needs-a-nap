@@ -1,13 +1,18 @@
 extends Button
 
+class_name PurchaseButton
+
 signal purchased
 signal hovered(cost)
 signal unhovered(cost)
 const Config = preload("res://Shop/Config.gd")
-export(String, "Block") var KIND
+export(String, "Block", "Parachute", "Oil", "Strength") var KIND
 
 var kind = null
 var current_cost = 0
+
+func get_class():
+	return "PurchaseButton"
 
 func set_current_name():
 	text = Config.name(kind)
@@ -18,7 +23,6 @@ func set_current_cost():
 func configure():
 	pressed = false
 	disabled = not Config.can_purchase(kind)
-	print(disabled)
 	set_current_name()
 	set_current_cost()
 
@@ -33,6 +37,9 @@ func purchase():
 func determine_kind():
 	match KIND:
 		"Block": kind = Config.ITEM.BLOCK
+		"Parachute": kind = Config.ITEM.PARACHUTE
+		"Oil": kind = Config.ITEM.OIL
+		"Strength": kind = Config.ITEM.STRENGTH
 		_: assert(false, "Invalid kind: %s" % KIND)
 
 func hover():
