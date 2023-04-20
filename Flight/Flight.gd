@@ -11,9 +11,10 @@ export var DEFAULT_STARTING_VELOCITY = Vector2(250, -100)
 export var SUPERBOUNCE_FRAMES = 10
 export var MIN_ROTATION = 1.0
 export var MAX_ROTATION = 10.0
-export var PARACHUTE_X_SPEED_REDUCTION = 0.75
+export var PARACHUTE_X_SPEED_REDUCTION = 0.85
 export var PARACHUTE_Y_SPEED_REDUCTION = 0.25
 export var PARACHUTE_GRAVITY_REDUCTION = 0.4
+export var PARACHUTE_MAX_GRAVITY = 50
 export var OILINESS_PENALTY_REDUCTION_FACTOR = 0.15
 export var STRENGTH_INCREASE_FACTOR = 1.3
 const MAX_EXPECTED_SPEED_FOR_ROTATION = 250
@@ -79,7 +80,7 @@ func _ready():
 	# back to where it needs to be when we aren't testing 
 	boulder.position = Vector2(-1230, 448)
 	set_up_for_current_state()
-
+ 
 	for terrain in $Terrain.get_children():
 		if terrain.is_in_group("cave"):
 			terrain.connect("boulder_entered", self, "entered_cave")
@@ -106,7 +107,9 @@ func apply_gravity(delta : float):
 	var gravity = calculate_gravity()
 	var proposed_velocity = velocity.y + (gravity * delta)
 	if proposed_velocity < 0: velocity.y = proposed_velocity
-	else: velocity.y = min(proposed_velocity, MAX_GRAVITY)
+	else: 
+		var max_gravity = MAX_GRAVITY if not parachute_deployed else PARACHUTE_MAX_GRAVITY
+		velocity.y = min(proposed_velocity, max_gravity)
 
 func handle_bounce(collision : KinematicCollision2D, superbounced):
 	# Maybe this should do a different thing for the x and y axis?

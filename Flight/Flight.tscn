@@ -108,3 +108,13 @@ position = Vector2( 3919, -49 )
 
 [node name="Steep3" parent="Terrain" instance=ExtResource( 11 )]
 position = Vector2( 4303, -144 )
+
+[node name="Steep4" parent="Terrain" instance=ExtResource( 11 )]
+position = Vector2( 4686, -239 )
+
+[node name="Moderate5" parent="Terrain" instance=ExtResource( 8 )]
+position = Vector2( 5067, -302 )
+
+[node name="Moderate6" parent="Terrain" instance=ExtResource( 8 )]
+position = Vector2( 5451, -301 )
+scale = Vector2( -1, 1 )
