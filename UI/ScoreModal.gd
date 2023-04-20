@@ -7,51 +7,50 @@ signal tween_components_completed
 
 onready var height_label : TweenedLabel = $Control/VBoxContainer/HBoxContainer/VBoxContainer2/HeightLabel
 onready var distance_label : TweenedLabel = $Control/VBoxContainer/HBoxContainer/VBoxContainer2/DistanceLabel
-onready var time_label : TweenedLabel = $Control/VBoxContainer/HBoxContainer/VBoxContainer2/TimeLabel
+onready var duration_label : TweenedLabel = $Control/VBoxContainer/HBoxContainer/VBoxContainer2/DurationLabel
 onready var continue_button : Button = $Control/VBoxContainer/ContinueButton
 onready var background : ColorRect = $Control/Background
 onready var vbox : VBoxContainer = $Control/VBoxContainer
-onready var calmness_text : Label = $Control/VBoxContainer/CalmContainer/Text/Text
-onready var calmness_value : Label = $Control/VBoxContainer/CalmContainer/Value/Value
-onready var calmness_tween : Tween = $CalmnessTween
+onready var rest_text : Label = $Control/VBoxContainer/RestContainer/Text/Text
+onready var rest_value : Label = $Control/VBoxContainer/RestContainer/Value/Value
+onready var rest_tween : Tween = $RestTween
 
 var was_tweening = false
 
 func tween_components(h, d, t):
 	height_label.tween_score(h)
 	distance_label.tween_score(d)
-	time_label.tween_score(t)
+	duration_label.tween_score(t)
 
 func is_tweening():
-	return height_label.is_tweening() or distance_label.is_tweening() or time_label.is_tweening()
+	return height_label.is_tweening() or distance_label.is_tweening() or duration_label.is_tweening()
 
-func set_calmness_visibility(percent : float):
+func set_rest_visibility(percent : float):
 	var amount = percent
-	calmness_text.modulate.a = amount
-	calmness_value.modulate.a = amount
+	rest_text.modulate.a = amount
+	rest_value.modulate.a = amount
 
-func tween_in_calmness():
-	var _ignore = calmness_tween.interpolate_method(self,
-	 "set_calmness_visibility",
+func tween_in_rest():
+	var _ignore = rest_tween.interpolate_method(self,
+	 "set_rest_visibility",
 	  0.0, 
 	  1.0, 
 	  1.5, 
 	  Tween.TRANS_LINEAR, 
 	  Tween.EASE_IN)
 
-	_ignore = calmness_tween.start()
+	_ignore = rest_tween.start()
 
-func tween_scores(height_, distance_, time_):
-	set_calmness_visibility(0)
-	tween_components(height_, distance_, time_)
-	var calmness = ScoreComputation.compute_calmness(height_, distance_, time_)
-	calmness_value.text = str(calmness)
-	State.add_calmness(calmness)
+func tween_scores(height_, distance_, duration_):
+	set_rest_visibility(0)
+	tween_components(height_, distance_, duration_)
+	var rest = ScoreComputation.compute_rest(height_, distance_, duration_)
+	rest_value.text = str(rest)
+	State.add_rest(rest)
 	yield(self, "tween_components_completed")
-	tween_in_calmness()
+	tween_in_rest()
 
 func continue_pressed():
-	print("continuing")
 	emit_signal("continue_pressed")
 
 func configure_background():

@@ -7,7 +7,7 @@ onready var tween_ = $Tween
 var score = 0.0 setget set_score
 
 func set_score(score_ : float):
-	text = "%0.2f" % score_
+	text = "%0.1f" % score_
 	score = score_
 
 func _ready():

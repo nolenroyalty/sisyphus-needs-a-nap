@@ -69,6 +69,8 @@ func _ready():
 	set_up_for_current_state()
 
 func play_sound(sound):
+	# Maybe the bounce stuff here should live in the boulder scene idk.
+	# Probably doesn't matter.
 	var stream = null
 	match sound:
 		SOUNDS.BOUNCE: stream = load("res://sounds/bounce1.wav")
@@ -146,9 +148,9 @@ func rotate_boulder():
 	else:
 		var is_positive = velocity.x >= 0
 		var speed = abs(velocity.x)
-		var degrees = MIN_ROTATION + (MAX_ROTATION - MIN_ROTATION) * (min(speed, MAX_EXPECTED_SPEED_FOR_ROTATION) / MAX_EXPECTED_SPEED_FOR_ROTATION)
-		if is_positive: boulder.rotation_degrees += degrees
-		else: boulder.rotation_degrees -= degrees
+		var d = MIN_ROTATION + (MAX_ROTATION - MIN_ROTATION) * (min(speed, MAX_EXPECTED_SPEED_FOR_ROTATION) / MAX_EXPECTED_SPEED_FOR_ROTATION)
+		if not is_positive: d = -d
+		boulder.rotate_sprite(d)
 
 func launch_or_freeze_boulder():
 	if frozen:
@@ -200,7 +202,7 @@ func _physics_process(delta):
 		if frozen: 
 			scoreScreen.tween_scores(flightscore.max_height(),
 			 flightscore.max_distance(),
-			 flightscore.frames_in_the_air())
+			 flightscore.duration())
 			scoreScreen.visible = true
 			flightscore.reset_scores(boulder)
 	else:

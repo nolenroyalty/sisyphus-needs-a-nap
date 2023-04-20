@@ -1,12 +1,17 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Prototype Sprites/launch-prototype.png" type="Texture" id=1]
 [ext_resource path="res://Boulder/Boulder.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Flight/Tiles/Slope.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Terrain/SlopeGentle.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Flight/Flight.gd" type="Script" id=4]
 [ext_resource path="res://UI/ScoreModal.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Prototype Sprites/player-prototype.png" type="Texture" id=6]
 [ext_resource path="res://Flight/Platform.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Terrain/SlopeModerate.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Terrain/Flat.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Terrain/Valley1.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Terrain/SlopeSteep.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Terrain/Cave1.tscn" type="PackedScene" id=12]
 
 [node name="Flight" type="Node2D"]
 script = ExtResource( 4 )
@@ -29,80 +34,6 @@ drag_margin_right = 0.4
 drag_margin_bottom = 0.4
 
 [node name="BouncePlayer" type="AudioStreamPlayer2D" parent="Boulder"]
-
-[node name="Slopes" type="Node2D" parent="."]
-
-[node name="Slope" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 79, 169 )
-
-[node name="Slope3" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 462, 42 )
-
-[node name="Slope2" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( -305, 297 )
-
-[node name="Slope4" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 1230, -213 )
-
-[node name="Slope5" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 1614, -341 )
-
-[node name="Slope6" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 846, -86 )
-
-[node name="Slope7" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 2381, -596 )
-
-[node name="Slope8" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 2764, -723 )
-
-[node name="Slope9" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 1997, -468 )
-
-[node name="Slope10" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 3532, -978 )
-
-[node name="Slope11" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 3916, -1105 )
-
-[node name="Slope12" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 3148, -851 )
-
-[node name="Slope13" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 4683, -1361 )
-
-[node name="Slope14" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 5067, -1488 )
-
-[node name="Slope15" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 4300, -1233 )
-
-[node name="Slope16" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 5835, -1744 )
-
-[node name="Slope17" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 6219, -1872 )
-
-[node name="Slope18" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 5451, -1616 )
-
-[node name="Slope19" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 6987, -2128 )
-
-[node name="Slope20" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 7371, -2256 )
-
-[node name="Slope21" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 6603, -2000 )
-
-[node name="Slope22" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 8139, -2512 )
-
-[node name="Slope23" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 8523, -2640 )
-
-[node name="Slope24" parent="Slopes" instance=ExtResource( 3 )]
-position = Vector2( 7755, -2384 )
 
 [node name="Launch" type="Node2D" parent="."]
 position = Vector2( -1521, -39 )
@@ -136,3 +67,44 @@ visible = false
 [node name="Platform" parent="." instance=ExtResource( 7 )]
 position = Vector2( -1246, 464 )
 z_index = -1
+
+[node name="Terrain" type="Node2D" parent="."]
+
+[node name="Flat" parent="Terrain" instance=ExtResource( 9 )]
+position = Vector2( -305, 361 )
+
+[node name="Gentle" parent="Terrain" instance=ExtResource( 3 )]
+position = Vector2( 79, 361 )
+
+[node name="Moderate" parent="Terrain" instance=ExtResource( 8 )]
+position = Vector2( 463, 330 )
+
+[node name="Moderate2" parent="Terrain" instance=ExtResource( 8 )]
+position = Vector2( 847, 266 )
+
+[node name="Steep" parent="Terrain" instance=ExtResource( 11 )]
+position = Vector2( 1615, 203 )
+
+[node name="Valley" parent="Terrain" instance=ExtResource( 10 )]
+position = Vector2( 1231, 234 )
+
+[node name="Cave" parent="Terrain" instance=ExtResource( 12 )]
+position = Vector2( 2575, 29 )
+
+[node name="Moderate3" parent="Terrain" instance=ExtResource( 8 )]
+position = Vector2( 1999, 140 )
+
+[node name="Gentle2" parent="Terrain" instance=ExtResource( 3 )]
+position = Vector2( 2383, 76 )
+
+[node name="Flat2" parent="Terrain" instance=ExtResource( 9 )]
+position = Vector2( 3151, 45 )
+
+[node name="Moderate4" parent="Terrain" instance=ExtResource( 8 )]
+position = Vector2( 3535, 46 )
+
+[node name="Steep2" parent="Terrain" instance=ExtResource( 11 )]
+position = Vector2( 3919, -49 )
+
+[node name="Steep3" parent="Terrain" instance=ExtResource( 11 )]
+position = Vector2( 4303, -144 )
