@@ -19,6 +19,8 @@ export var OILINESS_PENALTY_REDUCTION_FACTOR = 0.15
 export var STRENGTH_INCREASE_FACTOR = 1.3
 const MAX_EXPECTED_SPEED_FOR_ROTATION = 250
 const DISTANCE_AT_WHICH_WE_FLAG_A_LANDMARK = 1000
+const MAX_TOTAL_DOWNHILL_BOUNCES = 10
+const MAX_CONSECUTIVE_DOWNHILL_BOUNCES = 2
 
 onready var boulder = $Boulder
 onready var scoreScreen = $ScoreScreen
@@ -26,18 +28,22 @@ onready var player = $Launch/Player
 onready var audioStreamPlayer : AudioStreamPlayer2D = $Boulder/BouncePlayer
 onready var bottom_bar : FlightBottomBar = $FlightBottomBar
 
+enum SUPERBOUNCE_STATE {NONE, BOUNCING}
+enum SOUNDS { BOUNCE, SUPERBOUNCE, PARACHUTE }
+enum LAUNCH_STATE { AWAITING_LAUNCH, LAUNCHED, FROZEN }
+
 var velocity = Vector2()
 var frozen = true
-var frozen_count = 0
-enum SUPERBOUNCE_STATE {NONE, BOUNCING}
+var total_downhill_bounces = 0
+var consecutive_downhill_bounces = 0
 var superbounce_frames_remaining = 0
 var superbounce_state = SUPERBOUNCE_STATE.NONE
 var flightscore : FlightScore
 var parachute_deployed = false
 var in_cave = false
 var landmarks = []
+var launch_state = LAUNCH_STATE.AWAITING_LAUNCH
 
-enum SOUNDS { BOUNCE, SUPERBOUNCE, PARACHUTE }
 
 func calculate_gravity():
 	if parachute_deployed and velocity.y > 0:
@@ -78,7 +84,8 @@ func exited_cave():
 	
 func _ready():
 	flightscore = FlightScore.new(boulder)
-	scoreScreen.connect("continue_pressed", self, "continue_pressed")
+	var _ignore = scoreScreen.connect("continue_pressed", self, "continue_pressed")
+	_ignore = bottom_bar.connect("parachute_deployed_via_click", self, "try_to_deploy_parachute_from_bottom_bar")
 	# Make it easy to move the boulder around for testing purposes and then snap it
 	# back to where it needs to be when we aren't testing 
 	boulder.position = Vector2(-1230, 448)
@@ -136,7 +143,7 @@ func handle_bounce(collision : KinematicCollision2D, superbounced):
 	
 
 func is_rolling_downhill():
-	if abs(velocity.x) < 1 and abs(velocity.y) < 1:
+	if abs(velocity.x) < 10 or abs(velocity.y) < 10:
 		return true
 		
 	if in_cave:
@@ -144,13 +151,17 @@ func is_rolling_downhill():
 	else:
 		return velocity.x < 0
 	
-func check_if_rolling_downhill_after_collision():
+func should_freeze_after_this_bounce():
 	if is_rolling_downhill():
 		print("rolling downhill! in cave: %s" % in_cave)
-		frozen_count += 1
+		total_downhill_bounces += 1
+		consecutive_downhill_bounces += 1
+	else:
+		consecutive_downhill_bounces = 0
 	
-	if frozen_count > 2:
-		frozen_count = 0
+	if consecutive_downhill_bounces > MAX_CONSECUTIVE_DOWNHILL_BOUNCES or total_downhill_bounces > MAX_TOTAL_DOWNHILL_BOUNCES:
+		total_downhill_bounces = 0
+		consecutive_downhill_bounces = 0
 		return true
 	else:
 		return false
@@ -179,38 +190,35 @@ func handle_superbounce_pressed():
 		superbounce_frames_remaining = SUPERBOUNCE_FRAMES
 
 func rotate_boulder():
-	if parachute_deployed:
-		pass
-	else:
-		var is_positive = velocity.x >= 0
-		var speed = abs(velocity.x)
-		var d = MIN_ROTATION + (MAX_ROTATION - MIN_ROTATION) * (min(speed, MAX_EXPECTED_SPEED_FOR_ROTATION) / MAX_EXPECTED_SPEED_FOR_ROTATION)
-		if not is_positive: d = -d
-		boulder.rotate_sprite(d)
-
-func launch_or_freeze_boulder():
-	if frozen:
-		frozen = false
-		velocity = calculate_starting_velocity()
-	else:
-		frozen = true
-		velocity = Vector2.ZERO
+	var d = 0.0
+	var is_positive = velocity.x >= 0
+	var speed = abs(velocity.x)
+	d = MIN_ROTATION + (MAX_ROTATION - MIN_ROTATION) * (min(speed, MAX_EXPECTED_SPEED_FOR_ROTATION) / MAX_EXPECTED_SPEED_FOR_ROTATION)
+	if not is_positive: d = -d
+	boulder.rotate_sprite(d)
 
 func continue_pressed():
 	scoreScreen.visible = false
 	SceneChange.set_scene(SceneChange.SCENE_SHOP)
 
 func can_deploy_parachute():
-	return State.has_parachute and !parachute_deployed 
-	# and (velocity.y > 0 or velocity.x < 0)
+	return State.has_parachute and !parachute_deployed and launch_state == LAUNCH_STATE.LAUNCHED
 
 func deploy_parachute():
 	parachute_deployed = true
+	boulder.deploy_parachute()
 	velocity.x *= PARACHUTE_X_SPEED_REDUCTION
 	if velocity.y > 0: 
 		velocity.y *= PARACHUTE_Y_SPEED_REDUCTION
+	bottom_bar.deploy_parachute()
 	play_sound(SOUNDS.PARACHUTE)
 
+func try_to_deploy_parachute_from_bottom_bar():
+	if can_deploy_parachute():
+		deploy_parachute()
+	else:
+		if launch_state == LAUNCH_STATE.LAUNCHED:
+			print("Probable bug - tried to deploy parachute from bottom bar but it isn't availble!")
 
 func landmark_to_display():
 	var boulder_position = boulder.global_position
@@ -246,10 +254,13 @@ func maybe_display_landmark():
 		bottom_bar.hide_landmark()
 
 func _physics_process(delta):
-	if Input.is_action_just_pressed("launch_boulder"):
-		launch_or_freeze_boulder()
+	if Input.is_action_just_pressed("launch_boulder") and launch_state == LAUNCH_STATE.AWAITING_LAUNCH:
+		launch_state = LAUNCH_STATE.LAUNCHED
+		velocity = calculate_starting_velocity()
 
-	if frozen: return
+	if launch_state != LAUNCH_STATE.LAUNCHED:
+		return
+
 	if Input.is_action_just_pressed("superbounce"): handle_superbounce_pressed()
 	if Input.is_action_just_pressed("deploy_parachute") and can_deploy_parachute():
 		deploy_parachute()
@@ -257,11 +268,7 @@ func _physics_process(delta):
 	tick_superbounce_state()
 	flightscore.tick(boulder)
 	maybe_display_landmark()
-
-	if parachute_deployed:
-		pass
-	else:
-		rotate_boulder()
+	rotate_boulder()
 
 	var collision = boulder.move_and_collide(velocity * delta)
 	if collision:
@@ -269,13 +276,14 @@ func _physics_process(delta):
 		play_bounce_sound(superbounced)
 		handle_bounce(collision, superbounced)
 		reset_superbounce_state()
-		frozen = check_if_rolling_downhill_after_collision()
 		
-		if frozen: 
+		if should_freeze_after_this_bounce():
+			launch_state = LAUNCH_STATE.FROZEN
 			scoreScreen.tween_scores(flightscore.max_height(),
 			 flightscore.max_distance(),
 			 flightscore.duration())
 			scoreScreen.visible = true
 			flightscore.reset_scores(boulder)
+			boulder.stop_animating()
 	else:
 		apply_gravity(delta)

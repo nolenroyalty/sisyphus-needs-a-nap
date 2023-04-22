@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://UI/FlightBottomBar.gd" type="Script" id=1]
 [ext_resource path="res://UI/Sprites/ArrowRight.png" type="Texture" id=2]
+[ext_resource path="res://UI/ParachuteIcon.tscn" type="PackedScene" id=3]
 
 [node name="FlightBottomBar" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -19,3 +20,13 @@ align = 2
 position = Vector2( 354, 176 )
 rotation = -1.54287
 texture = ExtResource( 2 )
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="Gadgets" type="HBoxContainer" parent="."]
+margin_left = 6.0
+margin_top = 160.0
+margin_right = 159.0
+margin_bottom = 192.0
+
+[node name="ParachuteIcon" parent="Gadgets" instance=ExtResource( 3 )]
