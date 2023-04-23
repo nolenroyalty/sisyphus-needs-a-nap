@@ -135,12 +135,14 @@ static func _update_state_after_purchase(kind) -> void:
 			State.block_height += 1
 		ITEM.PARACHUTE:
 			State.has_parachute = true
+			State.display_fact_if_we_havent_yet(State.FACT.PARACHUTE)
 		ITEM.OIL:
 			State.oil_level += 1
 		ITEM.STRENGTH:
 			State.strength_level += 1
 		ITEM.SLINGSHOT:
 			State.has_slingshot = true
+			State.display_fact_if_we_havent_yet(State.FACT.SLINGSHOT)
 		_:
 			print("unexpected item kind")
 

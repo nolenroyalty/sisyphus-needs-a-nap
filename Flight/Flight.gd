@@ -24,13 +24,14 @@ const SLINGSHOT_AMMO = 4
 
 onready var boulder = $Boulder
 onready var scoreScreen = $ScoreScreen
+onready var text_display = $TextDisplay
 onready var player = $Launch/Player
 onready var audioStreamPlayer : AudioStreamPlayer2D = $Boulder/BouncePlayer
 onready var bottom_bar : FlightBottomBar = $FlightBottomBar
 
 enum SUPERBOUNCE_STATE {NONE, BOUNCING}
 enum SOUNDS { BOUNCE, SUPERBOUNCE, PARACHUTE, SLINGSHOT }
-enum LAUNCH_STATE { AWAITING_LAUNCH, LAUNCHED, FROZEN }
+enum LAUNCH_STATE { DISPLAYING_FACTS, AWAITING_LAUNCH, LAUNCHED, FROZEN }
 
 var velocity = Vector2()
 var frozen = true
@@ -44,7 +45,7 @@ var flightscore : FlightScore
 var parachute_deployed = false
 var in_cave = false
 var landmarks = []
-var launch_state = LAUNCH_STATE.AWAITING_LAUNCH
+var launch_state = LAUNCH_STATE.DISPLAYING_FACTS
 
 
 func calculate_gravity():
@@ -57,6 +58,7 @@ func calculate_starting_velocity():
 	var starting_velocity = DEFAULT_STARTING_VELOCITY
 	var multiplier = 1
 	match State.strength_level:
+		0: multiplier = 1.0
 		1: multiplier = 1.5
 		2: multiplier = 1.9
 		3: multiplier = 2.3
@@ -99,12 +101,17 @@ func handle_abort():
 	if launch_state != LAUNCH_STATE.LAUNCHED: return
 	freeze_and_display_scores(true)
 
+func handle_fact_display_gone():
+	launch_state = LAUNCH_STATE.AWAITING_LAUNCH
+
 func _ready():
+	State.display_fact_if_we_havent_yet(State.FACT.SPACEBAR)
 	flightscore = FlightScore.new(boulder)
 	var _ignore = scoreScreen.connect("continue_pressed", self, "continue_pressed")
 	_ignore = bottom_bar.connect("parachute_deployed_via_click", self, "try_to_deploy_parachute_from_bottom_bar")
 	_ignore = bottom_bar.connect("abort_clicked", self, "handle_abort")
 	_ignore = boulder.connect("boulder_clicked", self, "handle_boulder_clicked")
+	_ignore = text_display.connect("no_facts_are_displayed", self, "handle_fact_display_gone")
 	# Make it easy to move the boulder around for testing purposes and then snap it
 	# back to where it needs to be when we aren't testing 
 	boulder.position = Vector2(-1230, 448)
@@ -121,6 +128,8 @@ func _ready():
 		
 		if terrain.is_in_group("landmark"):
 			landmarks.append(terrain)
+	
+	text_display.maybe_display_facts()
 
 func play_sound(sound):
 	# Maybe the bounce stuff here should live in the boulder scene idk.
