@@ -6,7 +6,7 @@ signal purchased
 signal hovered(cost)
 signal unhovered(cost)
 const Config = preload("res://Shop/Config.gd")
-export(String, "Block", "Parachute", "Oil", "Strength") var KIND
+export(String, "Block", "Parachute", "Oil", "Strength", "Slingshot") var KIND
 
 var kind = null
 var current_cost = 0
@@ -40,6 +40,7 @@ func determine_kind():
 		"Parachute": kind = Config.ITEM.PARACHUTE
 		"Oil": kind = Config.ITEM.OIL
 		"Strength": kind = Config.ITEM.STRENGTH
+		"Slingshot": kind = Config.ITEM.SLINGSHOT
 		_: assert(false, "Invalid kind: %s" % KIND)
 
 func hover():

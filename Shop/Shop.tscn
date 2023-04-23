@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Shop/Shop.gd" type="Script" id=1]
 [ext_resource path="res://Themes/Default.tres" type="Theme" id=2]
 [ext_resource path="res://Shop/PurchaseButton.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Shop/PurchaseButton.gd" type="Script" id=4]
 
 [node name="ShopRoot" type="Node2D"]
 script = ExtResource( 1 )
@@ -115,6 +116,17 @@ margin_right = 164.0
 margin_bottom = 122.0
 text = "Strength"
 KIND = "Strength"
+
+[node name="PurchaseButton" type="Button" parent="Control/Grid"]
+margin_top = 146.0
+margin_right = 70.0
+margin_bottom = 171.0
+rect_min_size = Vector2( 70, 25 )
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Slingshot"
+script = ExtResource( 4 )
+KIND = "Slingshot"
 
 [node name="Launch" type="Button" parent="Control"]
 anchor_left = 1.0

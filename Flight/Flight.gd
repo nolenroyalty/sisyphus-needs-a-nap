@@ -1,10 +1,9 @@
 extends Node2D
 
 
-export var GRAVITY = 100
-export var MAX_GRAVITY = 100
-export var X_BOUNCE_PENALTY = 0.1
-export var Y_BOUNCE_BONUS = 0.03
+export var GRAVITY = 120
+export var MAX_GRAVITY = 200
+export var BOUNCE_PENALTY = 0.2
 
 export var BACKWARDS_ROLL_SPEED = 1.0
 export var DEFAULT_STARTING_VELOCITY = Vector2(250, -100)
@@ -15,12 +14,13 @@ export var PARACHUTE_X_SPEED_REDUCTION = 0.85
 export var PARACHUTE_Y_SPEED_REDUCTION = 0.25
 export var PARACHUTE_GRAVITY_REDUCTION = 0.4
 export var PARACHUTE_MAX_GRAVITY = 50
-export var OILINESS_PENALTY_REDUCTION_FACTOR = 0.15
 export var STRENGTH_INCREASE_FACTOR = 1.3
+export var SLINGSHOT_BOOST = 100
 const MAX_EXPECTED_SPEED_FOR_ROTATION = 250
 const DISTANCE_AT_WHICH_WE_FLAG_A_LANDMARK = 1000
 const MAX_TOTAL_DOWNHILL_BOUNCES = 10
 const MAX_CONSECUTIVE_DOWNHILL_BOUNCES = 2
+const SLINGSHOT_AMMO = 4
 
 onready var boulder = $Boulder
 onready var scoreScreen = $ScoreScreen
@@ -37,6 +37,8 @@ var frozen = true
 var total_downhill_bounces = 0
 var consecutive_downhill_bounces = 0
 var superbounce_frames_remaining = 0
+var oil_remaining = 0
+var slingshot_shots_remaining = 0
 var superbounce_state = SUPERBOUNCE_STATE.NONE
 var flightscore : FlightScore
 var parachute_deployed = false
@@ -51,16 +53,6 @@ func calculate_gravity():
 	else:
 		return GRAVITY
 
-func calculate_bounce_penalty(superbounced):
-	if velocity.x > 0:
-		var base_penalty = X_BOUNCE_PENALTY
-		base_penalty *= (0.5 if superbounced else 1.0)
-		base_penalty *= (1 - OILINESS_PENALTY_REDUCTION_FACTOR * State.oil_level)
-		return base_penalty
-	else:
-		# Bounce more quickly downhill
-		velocity.x *= (1 + X_BOUNCE_PENALTY)
-	
 func calculate_starting_velocity():
 	var starting_velocity = DEFAULT_STARTING_VELOCITY
 	var s = State.strength_level
@@ -69,7 +61,7 @@ func calculate_starting_velocity():
 		s -= 1
 	return starting_velocity
 
-func set_up_for_current_state():
+func set_positions_for_current_block_height():
 	var platform_offset = 64 * State.block_height
 	boulder.position.y -= platform_offset
 	player.position.y -= platform_offset
@@ -86,10 +78,15 @@ func _ready():
 	flightscore = FlightScore.new(boulder)
 	var _ignore = scoreScreen.connect("continue_pressed", self, "continue_pressed")
 	_ignore = bottom_bar.connect("parachute_deployed_via_click", self, "try_to_deploy_parachute_from_bottom_bar")
+	_ignore = boulder.connect("boulder_clicked", self, "handle_boulder_clicked")
 	# Make it easy to move the boulder around for testing purposes and then snap it
 	# back to where it needs to be when we aren't testing 
 	boulder.position = Vector2(-1230, 448)
-	set_up_for_current_state()
+	set_positions_for_current_block_height()
+	
+	oil_remaining = State.oil_level
+	if State.has_slingshot:
+		slingshot_shots_remaining = SLINGSHOT_AMMO
  
 	for terrain in $Terrain.get_children():
 		if terrain.is_in_group("cave"):
@@ -125,27 +122,40 @@ func apply_gravity(delta : float):
 		velocity.y = min(proposed_velocity, max_gravity)
 
 func handle_bounce(collision : KinematicCollision2D, superbounced):
-	# Maybe this should do a different thing for the x and y axis?
 	velocity = velocity.bounce(collision.normal)
-	if velocity.x > 0:
-		var penalty = X_BOUNCE_PENALTY * (0.5 if superbounced else 1.0)
-		velocity.x *= (1 - penalty)
-	else:
-		# Bounce more quickly downhill
-		velocity.x *= (1 + X_BOUNCE_PENALTY)
+	var bounce_penalty = BOUNCE_PENALTY
+
+	if superbounced:
+		bounce_penalty *= 0.5
 	
-	# Give the ball a little bit of vertical bounciness
-	if velocity.y < 0:
-		# This can result in us bouncing more quickly in the cave when we are falling
-		# so we skip it when y is negative.
-		var bonus = Y_BOUNCE_BONUS * (1.2 if superbounced else 1.0)
-		velocity.y *= (1 + bonus)
+	if oil_remaining > 0:
+		bounce_penalty = 0
+		oil_remaining -= 1
+		boulder.update_oil_visibility(oil_remaining)
 	
+	velocity *= (1 - bounce_penalty)
+	# velocity.x *= (1 - x_bounce_penalty)
+
+	# if velocity.y < 0:
+	# 	# This can result in us bouncing more quickly in the cave when we are falling
+	# 	# so we skip it when y is negative.
+	# 	velocity.y *= (1 + y_bounce_bonus)
+	
+func handle_boulder_clicked(vector_from_click_to_boulder_center):
+	if launch_state != LAUNCH_STATE.LAUNCHED:
+		return
+	
+	if State.has_slingshot and slingshot_shots_remaining > 0:
+		slingshot_shots_remaining -= 1
+		velocity += vector_from_click_to_boulder_center.normalized() * SLINGSHOT_BOOST
+		bottom_bar.set_slingshot_ammo(slingshot_shots_remaining)
 
 func is_rolling_downhill():
-	if abs(velocity.x) < 10 or abs(velocity.y) < 10:
-		return true
-		
+	var vx = abs(velocity.x)
+	var vy = abs(velocity.y)
+	if vx < 20 and vy < 20: return true
+	if vx + vy < 50: return true
+	
 	if in_cave:
 		return velocity.y < 0
 	else:

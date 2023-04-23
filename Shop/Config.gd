@@ -1,6 +1,6 @@
 extends Node
 
-enum ITEM { BLOCK = 1, PARACHUTE = 2, OIL = 3, STRENGTH = 4}
+enum ITEM { BLOCK = 1, PARACHUTE = 2, OIL = 3, STRENGTH = 4, SLINGSHOT = 5}
 
 const MAX_BLOCK_HEIGHT = 10
 const MAX_OIL_LEVEL = 3
@@ -42,8 +42,6 @@ static func next_strength_cost():
 			return 0
 
 static func next_oil_cost():
-	# Learn to fly has each level approximately double, but with substantial jitter
-	# so that this isn't super obvious
 	match State.oil_level:
 		0: return 30
 		1: return 300
@@ -58,6 +56,7 @@ static func max_level (kind) -> int:
 		ITEM.PARACHUTE: return 1
 		ITEM.OIL: return MAX_OIL_LEVEL
 		ITEM.STRENGTH: return MAX_STRENGTH_LEVEL
+		ITEM.SLINGSHOT: return 1
 		_:
 			return 0
 
@@ -67,6 +66,7 @@ static func current_level (kind) -> int:
 		ITEM.PARACHUTE: return 1 if  State.has_parachute else 0
 		ITEM.OIL: return State.oil_level
 		ITEM.STRENGTH: return State.strength_level
+		ITEM.SLINGSHOT: return 1 if State.has_slingshot else 0
 		_:
 			return 0
 
@@ -80,6 +80,9 @@ static func next_level(kind) -> int:
 static func parachute_cost():
 	return 250
 
+static func slingshot_cost():
+	return 250
+
 static func cost(kind) -> int:
 	match kind:
 		ITEM.BLOCK:
@@ -90,6 +93,8 @@ static func cost(kind) -> int:
 			return next_oil_cost()
 		ITEM.STRENGTH:
 			return next_strength_cost()
+		ITEM.SLINGSHOT:
+			return slingshot_cost()
 		_:	
 			return 0
 
@@ -104,6 +109,8 @@ static func name(kind) -> String:
 			return "Oiliness: %d" % next_level(kind)
 		ITEM.STRENGTH:
 			return "Strength: %d" % next_level(kind)
+		ITEM.SLINGSHOT:
+			return "Slingshot"
 		_:
 			return "unknown"
 
@@ -117,6 +124,8 @@ static func _update_state_after_purchase(kind) -> void:
 			State.oil_level += 1
 		ITEM.STRENGTH:
 			State.strength_level += 1
+		ITEM.SLINGSHOT:
+			State.has_slingshot = true
 		_:
 			print("unexpected item kind")
 

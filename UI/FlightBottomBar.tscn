@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://UI/FlightBottomBar.gd" type="Script" id=1]
 [ext_resource path="res://UI/Sprites/ArrowRight.png" type="Texture" id=2]
 [ext_resource path="res://UI/ParachuteIcon.tscn" type="PackedScene" id=3]
+[ext_resource path="res://UI/SlingshotIcon.tscn" type="PackedScene" id=4]
 
 [node name="FlightBottomBar" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -28,5 +29,10 @@ margin_left = 6.0
 margin_top = 160.0
 margin_right = 159.0
 margin_bottom = 192.0
+custom_constants/separation = 46
 
 [node name="ParachuteIcon" parent="Gadgets" instance=ExtResource( 3 )]
+
+[node name="SlingshotIcon" parent="Gadgets" instance=ExtResource( 4 )]
+margin_left = 46.0
+margin_right = 46.0
