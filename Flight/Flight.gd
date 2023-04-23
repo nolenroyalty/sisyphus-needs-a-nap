@@ -29,7 +29,7 @@ onready var audioStreamPlayer : AudioStreamPlayer2D = $Boulder/BouncePlayer
 onready var bottom_bar : FlightBottomBar = $FlightBottomBar
 
 enum SUPERBOUNCE_STATE {NONE, BOUNCING}
-enum SOUNDS { BOUNCE, SUPERBOUNCE, PARACHUTE }
+enum SOUNDS { BOUNCE, SUPERBOUNCE, PARACHUTE, SLINGSHOT }
 enum LAUNCH_STATE { AWAITING_LAUNCH, LAUNCHED, FROZEN }
 
 var velocity = Vector2()
@@ -73,8 +73,16 @@ func entered_cave():
 func exited_cave():
 	print("exited cave")
 	in_cave = false
-	
+
+func update_state_for_testing():
+	if true:
+		State.has_slingshot = true
+		State.has_parachute = true
+		State.strength_level = 1
+		State.block_height = 1
+
 func _ready():
+	update_state_for_testing() 
 	flightscore = FlightScore.new(boulder)
 	var _ignore = scoreScreen.connect("continue_pressed", self, "continue_pressed")
 	_ignore = bottom_bar.connect("parachute_deployed_via_click", self, "try_to_deploy_parachute_from_bottom_bar")
@@ -104,6 +112,7 @@ func play_sound(sound):
 		SOUNDS.BOUNCE: stream = load("res://sounds/bounce1.wav")
 		SOUNDS.SUPERBOUNCE: stream = load("res://sounds/super1.wav")
 		SOUNDS.PARACHUTE: stream = load("res://sounds/parachute1.wav")
+		SOUNDS.SLINGSHOT: stream = load("res://sounds/slingshot1.wav")
 		_: print("Unknown sound")
 	if stream:
 		audioStreamPlayer.stream = stream
@@ -134,6 +143,9 @@ func handle_bounce(collision : KinematicCollision2D, superbounced):
 		boulder.update_oil_visibility(oil_remaining)
 	
 	velocity *= (1 - bounce_penalty)
+	# Reduce y a little bit no matter what, and by some extra, so that the ball doesn't feel
+	# too bouncey
+	velocity.y *= (1 - bounce_penalty)
 	# velocity.x *= (1 - x_bounce_penalty)
 
 	# if velocity.y < 0:
@@ -149,6 +161,7 @@ func handle_boulder_clicked(vector_from_click_to_boulder_center):
 		slingshot_shots_remaining -= 1
 		velocity += vector_from_click_to_boulder_center.normalized() * SLINGSHOT_BOOST
 		bottom_bar.set_slingshot_ammo(slingshot_shots_remaining)
+		play_sound(SOUNDS.SLINGSHOT)
 
 func is_rolling_downhill():
 	var vx = abs(velocity.x)
@@ -239,7 +252,6 @@ func landmark_to_display():
 
 	for landmark in landmarks:
 		var distance = boulder_position.distance_to(landmark.landmark_position_for_distance())
-
 		if distance < DISTANCE_AT_WHICH_WE_FLAG_A_LANDMARK:
 			if landmark.landmark_name() == "Cave" and in_cave:
 				continue

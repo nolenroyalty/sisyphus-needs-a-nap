@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Terrain/Sprites/steepslope.png" type="Texture" id=1]
+[ext_resource path="res://Terrain/SteepestSlope.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 1250, 6578 )
+
+[node name="SteepestSlope" type="StaticBody2D" groups=["landmark"]]
+collision_layer = 2
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+centered = false
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( 2, 511, 222, 95, 256, 78, 256, 512 )
+
+[node name="LandmarkAnchor" type="Node2D" parent="."]
+position = Vector2( 30, 460 )
+
+[node name="PastSlope" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PastSlope"]
+position = Vector2( 1506, -6069 )
+shape = SubResource( 1 )

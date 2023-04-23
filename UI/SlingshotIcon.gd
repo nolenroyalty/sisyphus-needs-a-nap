@@ -11,7 +11,11 @@ func hideemall():
 
 func set_ammo(ammo : int):
 	hideemall()
-	var i = 0
-	while i < ammo:
-		pebbles[i].show()
-		i += 1
+
+	if ammo == 0:
+		$Slingshot.modulate.a = 0.4
+	else:
+		var i = 0
+		while i < ammo:
+			pebbles[i].show()
+			i += 1

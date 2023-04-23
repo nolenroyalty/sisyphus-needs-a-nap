@@ -21,4 +21,5 @@ func try_make_purchase(rest_ : int):
 	return false
 
 func _ready():
-	has_slingshot = true
+	# has_slingshot = true
+	pass
