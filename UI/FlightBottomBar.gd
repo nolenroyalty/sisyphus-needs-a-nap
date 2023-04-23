@@ -3,11 +3,13 @@ extends CanvasLayer
 class_name FlightBottomBar
 
 signal parachute_deployed_via_click
+signal abort_clicked
 
 onready var landmark_label : Label = $LandmarkLabel
 onready var landmark_arrow : Sprite = $LandmarkArrow
 onready var parachute_gadget = $Gadgets/ParachuteIcon
 onready var slingshot_gadget = $Gadgets/SlingshotIcon
+onready var abort_button = $AbortButton
 
 func display_landmark(landmark, distance, angle):
 	landmark_label.show()
@@ -30,6 +32,9 @@ func deploy_parachute():
 func propagate_parachute_deploy():
 	emit_signal("parachute_deployed_via_click")
 
+func abort():
+	emit_signal("abort_clicked")
+
 func set_slingshot_ammo(ammo):
 	slingshot_gadget.set_ammo(ammo)
 
@@ -42,3 +47,4 @@ func _ready():
 	hide_landmark()
 
 	var _ignore = parachute_gadget.connect("parachute_deployed_via_click", self, "propagate_parachute_deploy")
+	_ignore = abort_button.connect("pressed", self, "abort")

@@ -1,9 +1,15 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://UI/FlightBottomBar.gd" type="Script" id=1]
 [ext_resource path="res://UI/Sprites/ArrowRight.png" type="Texture" id=2]
 [ext_resource path="res://UI/ParachuteIcon.tscn" type="PackedScene" id=3]
 [ext_resource path="res://UI/SlingshotIcon.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Fonts/HelvetiPixel.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://UI/Resources/NinepatchStyle.tres" type="StyleBox" id=6]
+
+[sub_resource type="DynamicFont" id=1]
+size = 4
+font_data = ExtResource( 5 )
 
 [node name="FlightBottomBar" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -36,3 +42,17 @@ custom_constants/separation = 46
 [node name="SlingshotIcon" parent="Gadgets" instance=ExtResource( 4 )]
 margin_left = 46.0
 margin_right = 46.0
+
+[node name="AbortButton" type="Button" parent="."]
+modulate = Color( 1, 1, 1, 0.607843 )
+margin_left = 356.0
+margin_top = 4.0
+margin_right = 378.0
+margin_bottom = 18.0
+custom_fonts/font = SubResource( 1 )
+custom_styles/hover = ExtResource( 6 )
+custom_styles/pressed = ExtResource( 6 )
+custom_styles/focus = ExtResource( 6 )
+custom_styles/disabled = ExtResource( 6 )
+custom_styles/normal = ExtResource( 6 )
+text = "Abort"

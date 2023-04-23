@@ -14,6 +14,7 @@ onready var vbox : VBoxContainer = $Control/VBoxContainer
 onready var rest_text : Label = $Control/VBoxContainer/RestContainer/Text/Text
 onready var rest_value : Label = $Control/VBoxContainer/RestContainer/Value/Value
 onready var rest_tween : Tween = $RestTween
+onready var Title = $Control/VBoxContainer/Title
 
 var was_tweening = false
 
@@ -40,6 +41,10 @@ func tween_in_rest():
 	  Tween.EASE_IN)
 
 	_ignore = rest_tween.start()
+
+func set_title(aborted):
+	if aborted: Title.text = "Launch Aborted"
+	else: Title.text = "Launch Completed"
 
 func tween_scores(height_, distance_, duration_):
 	set_rest_visibility(0)

@@ -2,7 +2,7 @@ extends Node2D
 
 
 export var GRAVITY = 120
-export var MAX_GRAVITY = 200
+export var MAX_GRAVITY = 300
 export var BOUNCE_PENALTY = 0.2
 
 export var BACKWARDS_ROLL_SPEED = 1.0
@@ -55,14 +55,24 @@ func calculate_gravity():
 
 func calculate_starting_velocity():
 	var starting_velocity = DEFAULT_STARTING_VELOCITY
-	var s = State.strength_level
-	while s:
-		starting_velocity *= STRENGTH_INCREASE_FACTOR
-		s -= 1
+	var multiplier = 1
+	match State.strength_level:
+		1: multiplier = 1.5
+		2: multiplier = 1.9
+		3: multiplier = 2.3
+		_:
+			print("Unknown strength level %d" % State.strength_level)
+	
+	starting_velocity *= multiplier
 	return starting_velocity
 
 func set_positions_for_current_block_height():
-	var platform_offset = 64 * State.block_height
+	var b = State.block_height
+	var platform_offset = 0
+	while b > 0:
+		platform_offset += 21
+		if b % 3 == 0: platform_offset += 1
+		b -= 1
 	boulder.position.y -= platform_offset
 	player.position.y -= platform_offset
 
@@ -74,18 +84,26 @@ func exited_cave():
 	print("exited cave")
 	in_cave = false
 
-func update_state_for_testing():
-	if true:
-		State.has_slingshot = true
-		State.has_parachute = true
-		State.strength_level = 1
-		State.block_height = 1
+func freeze_and_display_scores(aborted):
+	scoreScreen.set_title(aborted)
+	launch_state = LAUNCH_STATE.FROZEN
+	scoreScreen.tween_scores(flightscore.max_height(),
+	 flightscore.max_distance(),
+	 flightscore.duration())
+	scoreScreen.visible = true
+	flightscore.reset_scores(boulder)
+	boulder.stop_animating()
+	State.launch_day += 1
+
+func handle_abort():
+	if launch_state != LAUNCH_STATE.LAUNCHED: return
+	freeze_and_display_scores(true)
 
 func _ready():
-	update_state_for_testing() 
 	flightscore = FlightScore.new(boulder)
 	var _ignore = scoreScreen.connect("continue_pressed", self, "continue_pressed")
 	_ignore = bottom_bar.connect("parachute_deployed_via_click", self, "try_to_deploy_parachute_from_bottom_bar")
+	_ignore = bottom_bar.connect("abort_clicked", self, "handle_abort")
 	_ignore = boulder.connect("boulder_clicked", self, "handle_boulder_clicked")
 	# Make it easy to move the boulder around for testing purposes and then snap it
 	# back to where it needs to be when we aren't testing 
@@ -146,12 +164,6 @@ func handle_bounce(collision : KinematicCollision2D, superbounced):
 	# Reduce y a little bit no matter what, and by some extra, so that the ball doesn't feel
 	# too bouncey
 	velocity.y *= (1 - bounce_penalty)
-	# velocity.x *= (1 - x_bounce_penalty)
-
-	# if velocity.y < 0:
-	# 	# This can result in us bouncing more quickly in the cave when we are falling
-	# 	# so we skip it when y is negative.
-	# 	velocity.y *= (1 + y_bounce_bonus)
 	
 func handle_boulder_clicked(vector_from_click_to_boulder_center):
 	if launch_state != LAUNCH_STATE.LAUNCHED:
@@ -300,12 +312,6 @@ func _physics_process(delta):
 		reset_superbounce_state()
 		
 		if should_freeze_after_this_bounce():
-			launch_state = LAUNCH_STATE.FROZEN
-			scoreScreen.tween_scores(flightscore.max_height(),
-			 flightscore.max_distance(),
-			 flightscore.duration())
-			scoreScreen.visible = true
-			flightscore.reset_scores(boulder)
-			boulder.stop_animating()
+			freeze_and_display_scores(false)
 	else:
 		apply_gravity(delta)

@@ -2,24 +2,22 @@ extends Node
 
 enum ITEM { BLOCK = 1, PARACHUTE = 2, OIL = 3, STRENGTH = 4, SLINGSHOT = 5}
 
-const MAX_BLOCK_HEIGHT = 10
+const MAX_BLOCK_HEIGHT = 9
 const MAX_OIL_LEVEL = 3
-const MAX_STRENGTH_LEVEL = 10
+const MAX_STRENGTH_LEVEL = 3
 
 static func next_block_cost():
 	# Learn to fly has each level approximately double, but with substantial jitter
 	# so that this isn't super obvious
 	match State.block_height:
-		0: return 50
-		1: return 75
-		2: return 160
-		3: return 350
-		4: return 750
-		5: return 1500
-		6: return 2000
-		7: return 3500
-		8: return 5000
-		9: return 6500
+		0: return 60
+		1: return 90
+		2: return 150
+		3: return 300
+		4: return 400
+		5: return 500
+		6: return 675
+		9: return 850
 		_:
 			print("unexpected current block height")
 			return 0
@@ -27,28 +25,45 @@ static func next_block_cost():
 static func next_strength_cost():
 	# We should update these numbers to diverge from block cost
 	match State.strength_level:
-		0: return 50
-		1: return 75
-		2: return 160
-		3: return 350
-		4: return 750
-		5: return 1500
-		6: return 2000
-		7: return 3500
-		8: return 5000
-		9: return 6500
+		0: return 100
+		1: return 450
+		2: return 1050
 		_:
 			print("unexpected current strength")
 			return 0
 
 static func next_oil_cost():
 	match State.oil_level:
-		0: return 30
-		1: return 300
-		2: return 2500
+		0: return 40
+		1: return 250
+		2: return 500
 		_:
 			print("unexpected current oil level")
 			return 0
+
+static func next_oil_description():
+	match State.oil_level:
+		0: return "Don't lose any speed on your first bounce"
+		1: return "Don't lose any speed on your first 2 bounces"
+		2: return "Don't lose any speed on your first 3 bounces"
+		_:
+			print("unexpected current oil level")
+			return "Oiliness: 0"
+
+static func description(kind) -> String:
+	match kind:
+		ITEM.BLOCK:
+			return "Launching the boulder from a higher height means it goes farther, right?"
+		ITEM.PARACHUTE:
+			return "Deploy with '1'.  Slows your descent but reduces your speed."
+		ITEM.OIL:
+			return next_oil_description()
+		ITEM.STRENGTH:
+			return "Get a little more swole and hit the boulder even farther"
+		ITEM.SLINGSHOT:
+			return "Click on the boulder to use. Allows you adjust the trajectory of the boulder slightly while it's in flight.  Comes with 4 shots."
+		_:
+			return "unknown"
 
 static func max_level (kind) -> int:
 	match kind:
@@ -81,7 +96,7 @@ static func parachute_cost():
 	return 250
 
 static func slingshot_cost():
-	return 250
+	return 500
 
 static func cost(kind) -> int:
 	match kind:

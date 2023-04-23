@@ -5,8 +5,9 @@ var block_height : int = 0
 var oil_level = 0
 var has_parachute = false
 var has_slingshot = false
-# var has_parachute = true
 var strength_level = 0
+var launch_day = 1
+var testing_level = 0
 
 func add_rest(amount : int):
 	rest += amount
@@ -20,6 +21,14 @@ func try_make_purchase(rest_ : int):
 		return true
 	return false
 
+func set_test_values():
+	if testing_level:
+		has_slingshot = true
+		has_parachute = true
+		strength_level = testing_level
+		block_height = testing_level
+		oil_level = testing_level
+
 func _ready():
-	# has_slingshot = true
+	set_test_values()
 	pass

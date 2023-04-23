@@ -201,7 +201,7 @@ margin_bottom = 798.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect7" type="ColorRect" parent="Filler"]
-margin_left = 2960.0
+margin_left = 2958.0
 margin_top = 102.0
 margin_right = 13451.0
 margin_bottom = 1218.0
