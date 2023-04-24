@@ -16,7 +16,7 @@ func passed_lava(_b):
 	emit_signal("passed_lava")
 
 func landmark_name():
-	return "Lava Pit"
+	return "Lava Pit"  
 
 func landmark_position_for_distance():
 	return anchor.global_position

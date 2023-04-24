@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 894.5, 1813.5 )
 
-[node name="Lava" type="StaticBody2D" groups=["landmark"]]
+[node name="Lava" type="StaticBody2D" groups=["landmark", "lava"]]
 collision_layer = 2
 script = ExtResource( 2 )
 

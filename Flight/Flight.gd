@@ -21,6 +21,7 @@ const DISTANCE_AT_WHICH_WE_FLAG_A_LANDMARK = 1000
 const MAX_TOTAL_DOWNHILL_BOUNCES = 50
 const MAX_CONSECUTIVE_DOWNHILL_BOUNCES = 2
 const SLINGSHOT_AMMO = 4
+const FRAMES_TO_SPEND_IN_LAVA = 60 * 2
 
 onready var boulder = $Boulder
 onready var scoreScreen = $ScoreScreen
@@ -31,9 +32,10 @@ onready var bottom_bar : FlightBottomBar = $FlightBottomBar
 
 enum SUPERBOUNCE_STATE {NONE, BOUNCING}
 enum SOUNDS { LAUNCH, BOUNCE, SUPERBOUNCE, PARACHUTE, SLINGSHOT }
-enum LAUNCH_STATE { DISPLAYING_FACTS, AWAITING_LAUNCH, LAUNCHED, FROZEN }
+enum LAUNCH_STATE { DISPLAYING_FACTS, AWAITING_LAUNCH, LAUNCHED, IN_LAVA, FROZEN }
 
 var velocity = Vector2()
+var frames_in_lava = 0
 var frozen = true
 var total_downhill_bounces = 0
 var consecutive_downhill_bounces = 0
@@ -86,6 +88,12 @@ func exited_cave():
 	print("exited cave")
 	in_cave = false
 
+func handle_entered_lava():
+	print("handling entered lava")
+	launch_state = LAUNCH_STATE.IN_LAVA
+	frames_in_lava = 0
+	velocity = Vector2.ZERO
+
 func freeze_and_display_scores(aborted):
 	scoreScreen.set_title(aborted)
 	launch_state = LAUNCH_STATE.FROZEN
@@ -114,7 +122,7 @@ func _ready():
 	_ignore = text_display.connect("no_facts_are_displayed", self, "handle_fact_display_gone")
 	# Make it easy to move the boulder around for testing purposes and then snap it
 	# back to where it needs to be when we aren't testing 
-	boulder.position = Vector2(-1230, 448)
+	# boulder.position = Vector2(-1230, 448)
 	set_positions_for_current_block_height()
 	
 	oil_remaining = State.oil_level
@@ -125,6 +133,9 @@ func _ready():
 		if terrain.is_in_group("cave"):
 			terrain.connect("boulder_entered", self, "entered_cave")
 			terrain.connect("boulder_exited", self, "exited_cave")
+		
+		if terrain.is_in_group("lava"):
+			terrain.connect("entered_lava", self, "handle_entered_lava")
 		
 		if terrain.is_in_group("landmark"):
 			landmarks.append(terrain)
@@ -297,18 +308,24 @@ func maybe_display_landmark():
 	else:
 		bottom_bar.hide_landmark()
 
+func process_lava(delta):
+	frames_in_lava += 1
+	if frames_in_lava >= FRAMES_TO_SPEND_IN_LAVA:
+		freeze_and_display_scores(false)
+	else:
+		var x = 35.0
+		if velocity.y < -x: velocity.y = 5
+		elif velocity.y < 0: velocity.y -= 5
+		elif velocity.y > 2*x: velocity.y = -5
+		else: velocity.y += 5
+		boulder.move_and_collide(velocity * delta)
+
 func launch_boulder():
 	launch_state = LAUNCH_STATE.LAUNCHED
 	velocity = calculate_starting_velocity()
 	play_sound(SOUNDS.LAUNCH)
 
-func _physics_process(delta):
-	if Input.is_action_just_pressed("launch_boulder") and launch_state == LAUNCH_STATE.AWAITING_LAUNCH:
-		launch_boulder()
-
-	if launch_state != LAUNCH_STATE.LAUNCHED:
-		return
-
+func process_launched(delta):
 	if Input.is_action_just_pressed("superbounce"): handle_superbounce_pressed()
 	if Input.is_action_just_pressed("deploy_parachute") and can_deploy_parachute():
 		deploy_parachute()
@@ -329,3 +346,12 @@ func _physics_process(delta):
 			freeze_and_display_scores(false)
 	else:
 		apply_gravity(delta)
+
+func _physics_process(delta):
+	match launch_state:
+		LAUNCH_STATE.AWAITING_LAUNCH:
+			if Input.is_action_just_pressed("launch_boulder"):
+				launch_boulder()
+		LAUNCH_STATE.IN_LAVA: process_lava(delta)
+		LAUNCH_STATE.LAUNCHED: process_launched(delta)
+		_: pass
