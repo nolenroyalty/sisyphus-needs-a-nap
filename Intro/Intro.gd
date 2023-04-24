@@ -10,6 +10,7 @@ onready var skip = $Skip
 enum WHO { SISYPHUS, FRIEND }
 var s = WHO.SISYPHUS
 var f = WHO.FRIEND
+var have_finished = false
 
 var dialogue = [
 	["hey sisyphus", f],
@@ -41,6 +42,12 @@ func size(who):
 		WHO.SISYPHUS: return sisyphus_placeholder.rect_size
 		WHO.FRIEND: return friend_placeholder.rect_size
 
+func finished():
+	if have_finished: return
+	have_finished = true
+	emit_signal("all_dialogue_finished")
+	SceneChange.set_scene(SceneChange.SCENE_FLIGHT)
+
 func play_dialogue():
 	var prior = { WHO.SISYPHUS: null, WHO.FRIEND: null}
 
@@ -59,12 +66,12 @@ func play_dialogue():
 		print("%s: %s" % [who, text])
 		yield(box, "dialogue_finished")
 		prior[who] = box
-	emit_signal("all_dialogue_finished")
-	SceneChange.set_scene(SceneChange.SCENE_FLIGHT)
+	finished()
+
 
 func skip_pressed():
 	print("dialogue skipped")
-	emit_signal("all_dialogue_finished")
+	finished()
 
 func _ready():
 	sisyphus_placeholder.hide()

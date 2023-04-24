@@ -30,7 +30,7 @@ onready var audioStreamPlayer : AudioStreamPlayer2D = $Boulder/BouncePlayer
 onready var bottom_bar : FlightBottomBar = $FlightBottomBar
 
 enum SUPERBOUNCE_STATE {NONE, BOUNCING}
-enum SOUNDS { BOUNCE, SUPERBOUNCE, PARACHUTE, SLINGSHOT }
+enum SOUNDS { LAUNCH, BOUNCE, SUPERBOUNCE, PARACHUTE, SLINGSHOT }
 enum LAUNCH_STATE { DISPLAYING_FACTS, AWAITING_LAUNCH, LAUNCHED, FROZEN }
 
 var velocity = Vector2()
@@ -136,6 +136,7 @@ func play_sound(sound):
 	# Probably doesn't matter.
 	var stream = null
 	match sound:
+		SOUNDS.LAUNCH: stream = load("res://sounds/launch1.wav")
 		SOUNDS.BOUNCE: stream = load("res://sounds/bounce1.wav")
 		SOUNDS.SUPERBOUNCE: stream = load("res://sounds/super1.wav")
 		SOUNDS.PARACHUTE: stream = load("res://sounds/parachute1.wav")
@@ -296,10 +297,14 @@ func maybe_display_landmark():
 	else:
 		bottom_bar.hide_landmark()
 
+func launch_boulder():
+	launch_state = LAUNCH_STATE.LAUNCHED
+	velocity = calculate_starting_velocity()
+	play_sound(SOUNDS.LAUNCH)
+
 func _physics_process(delta):
 	if Input.is_action_just_pressed("launch_boulder") and launch_state == LAUNCH_STATE.AWAITING_LAUNCH:
-		launch_state = LAUNCH_STATE.LAUNCHED
-		velocity = calculate_starting_velocity()
+		launch_boulder()
 
 	if launch_state != LAUNCH_STATE.LAUNCHED:
 		return
