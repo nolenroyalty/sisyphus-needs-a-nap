@@ -105,7 +105,7 @@ func handle_fact_display_gone():
 	launch_state = LAUNCH_STATE.AWAITING_LAUNCH
 
 func _ready():
-	State.display_fact_if_we_havent_yet(State.FACT.SPACEBAR)
+	State.display_fact_if_we_havent_yet(State.FACT.INTRO)
 	flightscore = FlightScore.new(boulder)
 	var _ignore = scoreScreen.connect("continue_pressed", self, "continue_pressed")
 	_ignore = bottom_bar.connect("parachute_deployed_via_click", self, "try_to_deploy_parachute_from_bottom_bar")

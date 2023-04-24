@@ -45,14 +45,6 @@ func animate_text(text):
 	yield(get_tree().create_timer(end_of_dialogue_default_pause), "timeout")
 	finished()
 
-# func _ready():
-# 	animate_text("hey sisyphus")
-# 	yield(self, "dialogue_finished")
-# 	animate_text("yeah")
-# 	yield(self, "dialogue_finished")
-# 	animate_text("hows the boulder pushing going")
-# 	pass # Replace with function body.
-
 func _process(_delta):
 	if Input.is_action_just_pressed("ui_accept") or Input.is_action_just_pressed("ui_cancel"):
 		advance_state()
