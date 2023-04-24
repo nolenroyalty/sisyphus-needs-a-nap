@@ -5,10 +5,11 @@ enum FACT_STATE { NOT_YET_DISPLAYED, SHOULD_DISPLAY, ALREADY_DISPLAYED }
 
 enum ACHIEVEMENTS {
 	WELL_RESTED,
+	INTO_CAVE,
 	CAVE_BOTTOM,
-	PAST_CAVE,
+	PASSED_CAVE,
 	INTO_LAVA,
-	PAST_LAVA,
+	PASSED_LAVA,
 	OVER_SLOPE,
     NAP_ACHIEVED }
 
@@ -55,10 +56,10 @@ func fact_was_displayed(fact):
 	fact_state[fact] = FACT_STATE.ALREADY_DISPLAYED
 
 # Maybe it's not great that we copy-pasted the fact code for achievements but whatever.
-func display_achievement_if_we_havent_yet(achievement):
+func achieve_if_we_havent_yet(achievement):
 	if achievement_state[achievement] == ACHIEVEMENT_STATE.NOT_YET_ACHIEVED:
 		print("displaying achievement: " + str(achievement))
-		achievement_state[achievement] = ACHIEVEMENT_STATE.ALREADY_ACHIEVED
+		achievement_state[achievement] = ACHIEVEMENT_STATE.JUST_ACHIEVED
 
 func achievement_was_displayed(achievement):
 	achievement_state[achievement] = ACHIEVEMENT_STATE.ALREADY_ACHIEVED
