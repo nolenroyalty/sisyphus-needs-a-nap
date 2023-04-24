@@ -11,12 +11,21 @@ var characters_per_second = 25
 var play_sound_every_n_characters = 3
 var end_of_dialogue_default_pause = 1.0
 var state = STATE.DISPLAYING
+var rng = RandomNumberGenerator.new()
+
+func should_play_sound(offset, add):
+	return offset % play_sound_every_n_characters == 0 \
+	 or (offset + add) %play_sound_every_n_characters == 0
 
 func show_characters(c):
 	c = int(c)
 	label.visible_characters = c
-	if c % play_sound_every_n_characters == 0:
+	var add = rng.randi() % 2
+	if should_play_sound(c, add):
+		var pitch_scale = 1.0 + rng.randfn(0.2, 0.1)
 		audio.stream = sound
+		audio.volume_db = -20.0
+		audio.pitch_scale = pitch_scale
 		audio.play()
 
 func finished():
@@ -48,3 +57,6 @@ func animate_text(text):
 func _process(_delta):
 	if Input.is_action_just_pressed("ui_accept") or Input.is_action_just_pressed("ui_cancel"):
 		advance_state()
+
+func _ready():
+	rng.randomize()
