@@ -3,6 +3,17 @@ extends Node
 enum FACT { SPACEBAR, PARACHUTE, SLINGSHOT }
 enum FACT_STATE { NOT_YET_DISPLAYED, SHOULD_DISPLAY, ALREADY_DISPLAYED }
 
+enum ACHIEVEMENTS {
+	WELL_RESTED,
+	CAVE_BOTTOM,
+	PAST_CAVE,
+	INTO_LAVA,
+	PAST_LAVA,
+	OVER_SLOPE,
+    NAP_ACHIEVED }
+
+enum ACHIEVEMENT_STATE { NOT_YET_ACHIEVED, JUST_ACHIEVED, ALREADY_ACHIEVED }
+
 var rest = 0
 var block_height : int = 0
 var oil_level = 0
@@ -13,6 +24,7 @@ var launch_day = 1
 var testing_level = 1
 
 var fact_state = {}
+var achievement_state = {}
 
 func add_rest(amount : int):
 	rest += amount
@@ -42,7 +54,19 @@ func display_fact_if_we_havent_yet(fact):
 func fact_was_displayed(fact):
 	fact_state[fact] = FACT_STATE.ALREADY_DISPLAYED
 
+# Maybe it's not great that we copy-pasted the fact code for achievements but whatever.
+func display_achievement_if_we_havent_yet(achievement):
+	if achievement_state[achievement] == ACHIEVEMENT_STATE.NOT_YET_ACHIEVED:
+		print("displaying achievement: " + str(achievement))
+		achievement_state[achievement] = ACHIEVEMENT_STATE.ALREADY_ACHIEVED
+
+func achievement_was_displayed(achievement):
+	achievement_state[achievement] = ACHIEVEMENT_STATE.ALREADY_ACHIEVED
+
 func _ready():
 	# set_test_values()
 	for fact in FACT.values():
 		fact_state[fact] = FACT_STATE.NOT_YET_DISPLAYED
+	
+	for achievement in ACHIEVEMENTS.values():
+		achievement_state[achievement] = ACHIEVEMENT_STATE.NOT_YET_ACHIEVED
