@@ -29,7 +29,7 @@ __meta__ = {
 [node name="FlightBottomBar" parent="." instance=ExtResource( 13 )]
 
 [node name="Boulder" parent="." instance=ExtResource( 2 )]
-position = Vector2( 2656, 22 )
+position = Vector2( 8528, -1026 )
 
 [node name="Camera2D" type="Camera2D" parent="Boulder"]
 position = Vector2( 1, 2 )

@@ -81,7 +81,6 @@ func set_positions_for_current_block_height():
 	player.position.y -= platform_offset
 
 func entered_cave():
-	State.achieve_if_we_havent_yet(State.ACHIEVEMENTS.INTO_CAVE)
 	print("entered cave") 
 	in_cave = true
 	
@@ -89,15 +88,7 @@ func exited_cave():
 	print("exited cave")
 	in_cave = false
 
-func made_it_to_cave_bottom():
-	print("hit cave bottom")
-	State.achieve_if_we_havent_yet(State.ACHIEVEMENTS.CAVE_BOTTOM)
-func made_it_past_cave(): 
-	print("passed the cave")
-	State.achieve_if_we_havent_yet(State.ACHIEVEMENTS.PASSED_CAVE)
-
 func handle_entered_lava():
-	State.achieve_if_we_havent_yet(State.ACHIEVEMENTS.INTO_LAVA)
 	print("handling entered lava")
 	launch_state = LAUNCH_STATE.IN_LAVA
 	frames_in_lava = 0
@@ -143,8 +134,6 @@ func _ready():
 		if terrain.is_in_group("cave"):
 			terrain.connect("boulder_entered", self, "entered_cave")
 			terrain.connect("boulder_exited", self, "exited_cave")
-			terrain.connect("boulder_made_it_to_the_bottom", self, "made_it_to_cave_bottom")
-			terrain.connect("boulder_passed", self, "made_it_past_cave")
 		
 		if terrain.is_in_group("lava"):
 			terrain.connect("entered_lava", self, "handle_entered_lava")

@@ -20,9 +20,9 @@ polygon = PoolVector2Array( 2, 511, 222, 95, 256, 78, 256, 512 )
 [node name="LandmarkAnchor" type="Node2D" parent="."]
 position = Vector2( 30, 460 )
 
-[node name="PastSlope" type="Area2D" parent="."]
+[node name="PassedSlope" type="Area2D" parent="."]
 collision_layer = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PastSlope"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PassedSlope"]
 position = Vector2( 1506, -6069 )
 shape = SubResource( 1 )

@@ -22,11 +22,12 @@ var dialogue = [
 	["tiring", s],
 	["i could use a nap", s],
 	["have you considered thwacking the boulder", f],
-	["thwacking it", s],
-	["yeah", f],
-	["thwacking", s],
-	["the boulder", f],
+	["thwacking the boulder", s],
 	["thwacking the boulder", f],
+	["thwacking ", s, 0.2],
+	["the boulder", f, 0.3],
+	["thwacking the boulder", s],
+	["yeah", f, 0.5],
 	["and then taking a nap while it falls back down", f],
 	["i mean", s],
 	["cant hurt", s]
@@ -62,7 +63,11 @@ func play_dialogue():
 		box.rect_position = position(who)
 		box.rect_size = size(who)
 		add_child(box)
-		box.animate_text(text)
+		if len(dialogue[i]) == 3:
+			var pause_time = dialogue[i][2]
+			box.animate_text(text, pause_time)
+		else:
+			box.animate_text(text)
 		print("%s: %s" % [who, text])
 		yield(box, "dialogue_finished")
 		prior[who] = box

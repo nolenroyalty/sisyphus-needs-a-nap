@@ -10,27 +10,27 @@
 script = ExtResource( 2 )
 
 [node name="SisyphusPlaceholder" parent="." instance=ExtResource( 1 )]
-margin_left = 70.0
+margin_left = 72.0
 margin_top = 21.0
-margin_right = 173.0
+margin_right = 175.0
 margin_bottom = 79.0
 
 [node name="FriendPlaceholder" parent="." instance=ExtResource( 1 )]
-margin_left = 183.0
+margin_left = 190.0
 margin_top = 21.0
-margin_right = 312.0
+margin_right = 319.0
 margin_bottom = 79.0
 
 [node name="Flat" parent="." instance=ExtResource( 3 )]
 position = Vector2( 192, 128 )
 
 [node name="Sisyphus" type="Sprite" parent="."]
-position = Vector2( 121, 96 )
+position = Vector2( 124, 96 )
 texture = ExtResource( 5 )
 hframes = 2
 
 [node name="Sisyphus-friend" type="Sprite" parent="."]
-position = Vector2( 229, 96 )
+position = Vector2( 255, 96 )
 texture = ExtResource( 4 )
 
 [node name="Skip" type="Button" parent="."]

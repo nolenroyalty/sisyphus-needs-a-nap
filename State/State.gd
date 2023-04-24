@@ -10,8 +10,9 @@ enum ACHIEVEMENTS {
 	PASSED_CAVE,
 	INTO_LAVA,
 	PASSED_LAVA,
-	OVER_SLOPE,
-    NAP_ACHIEVED }
+	PASSED_BIG_SLOPE,
+    NAP_ACHIEVED 
+}
 
 enum ACHIEVEMENT_STATE { NOT_YET_ACHIEVED, JUST_ACHIEVED, ALREADY_ACHIEVED }
 
@@ -63,6 +64,13 @@ func achieve_if_we_havent_yet(achievement):
 
 func achievement_was_displayed(achievement):
 	achievement_state[achievement] = ACHIEVEMENT_STATE.ALREADY_ACHIEVED
+
+func achievements_to_display():
+	var achievements_to_display = []
+	for achievement in ACHIEVEMENTS.values():
+		if achievement_state[achievement] == ACHIEVEMENT_STATE.JUST_ACHIEVED:
+			achievements_to_display.append(achievement)
+	return achievements_to_display
 
 func _ready():
 	# set_test_values()

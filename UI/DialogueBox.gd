@@ -39,7 +39,7 @@ func advance_state():
 			state = STATE.DONE
 			finished()
 
-func animate_text(text):
+func animate_text(text, pause_time=end_of_dialogue_default_pause):
 	label.text = text
 	label.visible_characters = 0
 	state = STATE.DISPLAYING
@@ -50,8 +50,7 @@ func animate_text(text):
 		show_characters(i+1)
 		yield(get_tree().create_timer(1.0 / characters_per_second), "timeout")
 	state = STATE.WAITING
-	
-	yield(get_tree().create_timer(end_of_dialogue_default_pause), "timeout")
+	yield(get_tree().create_timer(pause_time), "timeout")
 	finished()
 
 func _process(_delta):
