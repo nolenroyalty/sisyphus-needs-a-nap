@@ -8,7 +8,7 @@
 [ext_resource path="res://UI/Resources/NinepatchStyle.tres" type="StyleBox" id=6]
 
 [sub_resource type="DynamicFont" id=1]
-size = 4
+size = 6
 font_data = ExtResource( 5 )
 
 [node name="FlightBottomBar" type="CanvasLayer"]

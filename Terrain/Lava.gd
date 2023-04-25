@@ -14,7 +14,7 @@ func entered_lava(_b):
 
 func passed_lava(_b):
 	print("Passed Lava")
-	State.achieve_if_we_havent_yet(State.ACHIEVEMENTS.PAST_LAVA)
+	State.achieve_if_we_havent_yet(State.ACHIEVEMENTS.PASSED_LAVA)
 	emit_signal("passed_lava")
 
 func landmark_name():

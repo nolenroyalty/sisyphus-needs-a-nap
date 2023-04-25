@@ -8,20 +8,8 @@ onready var label = $Label
 onready var completed = $Completed
 onready var checkmark = $Checkmark
 onready var mouse_area = $MouseArea
-# export (String, "little_rest", "into_cave", "cave_bottom", "passed_cave", "into_lava", "passed_lava", "passed_big_slope", "nap_achieved") var achievement_
-# onready var achievement = this_achievement()
 var achievement = null
 
-# func this_achievement():
-# 	match achievement_:
-# 		"little_rest": return State.ACHIEVEMENTS.A_LITTLE_REST
-# 		"into_cave": return State.ACHIEVEMENTS.INTO_CAVE
-# 		"cave_bottom": return State.ACHIEVEMENTS.CAVE_BOTTOM
-# 		"passed_cave": return State.ACHIEVEMENTS.PASSED_CAVE
-# 		"into_lava": return State.ACHIEVEMENTS.INTO_LAVA
-# 		"passed_lava": return State.ACHIEVEMENTS.PASSED_LAVA
-# 		"passed_big_slope": return State.ACHIEVEMENTS.PASSED_BIG_SLOPE
-# 		"nap_achieved": return State.ACHIEVEMENTS.NAP_ACHIEVED
 
 func complete(a):
 	if a == achievement:
@@ -30,7 +18,7 @@ func complete(a):
 func achievement_description():
 	var reward = State.achievement_reward(achievement)
 	var description = State.achievement_description(achievement)
-	return "[Calmness: %s]\n%s" % [ reward, description]
+	return "[Rest: %s]\n%s" % [ reward, description]
 
 func mouse_entered():
 	emit_signal("achievement_moused_over", achievement)

@@ -32,15 +32,15 @@ anchor_bottom = 1.0
 text = "Achievements"
 align = 1
 
-[node name="AchievementText" parent="." instance=ExtResource( 1 )]
-margin_left = 123.0
-margin_top = 4.0
-margin_right = 261.0
-margin_bottom = 62.0
-
 [node name="WholeMouseArea" type="Area2D" parent="."]
 position = Vector2( 13, 0 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WholeMouseArea"]
 position = Vector2( 317, 71.5 )
 shape = SubResource( 1 )
+
+[node name="AchievementText" parent="." instance=ExtResource( 1 )]
+margin_left = 108.0
+margin_top = 8.0
+margin_right = 254.0
+margin_bottom = 80.0

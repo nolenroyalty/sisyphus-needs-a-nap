@@ -48,7 +48,8 @@ func set_title(aborted):
 
 func tween_scores(height_, distance_, duration_):
 	set_rest_visibility(0)
-	tween_components(height_, distance_, duration_)
+	# We divide distance by 10 because it looks too big otherwise.
+	tween_components(height_, distance_ / 10.0, duration_)
 	var rest = ScoreComputation.compute_rest(height_, distance_, duration_)
 	rest_value.text = str(rest)
 	State.add_rest(rest)

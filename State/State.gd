@@ -67,6 +67,7 @@ func achieve_if_we_havent_yet(achievement):
 func achievement_was_displayed(achievement):
 	achievement_state[achievement] = ACHIEVEMENT_STATE.ALREADY_ACHIEVED
 	emit_signal("achievement_was_displayed", achievement)
+	rest += achievement_reward(achievement)
 
 func achievements_to_display():
 	var achievements_to_display = []
@@ -82,7 +83,7 @@ func achievement_text(achievement):
 		ACHIEVEMENTS.INTO_CAVE:
 			return "Explorer"
 		ACHIEVEMENTS.CAVE_BOTTOM:
-			return "Echo (echo) (echo)"
+			return "Echo Echo"
 		ACHIEVEMENTS.PASSED_CAVE:
 			return "Long Distance"
 		ACHIEVEMENTS.INTO_LAVA:
@@ -99,7 +100,7 @@ func achievement_text(achievement):
 func achievement_description(achievement):
 	match achievement:
 		ACHIEVEMENTS.A_LITTLE_REST:
-			return "Make 250 calmness from a single launch"
+			return "Achieve a launch duration of at least 15 seconds"
 		ACHIEVEMENTS.INTO_CAVE:
 			return "Enter the cave"
 		ACHIEVEMENTS.CAVE_BOTTOM:
@@ -147,6 +148,6 @@ func _ready():
 	for achievement in ACHIEVEMENTS.values():
 		achievement_state[achievement] = ACHIEVEMENT_STATE.NOT_YET_ACHIEVED
 	
-	achievement_state[ACHIEVEMENTS.A_LITTLE_REST] = ACHIEVEMENT_STATE.ALREADY_ACHIEVED
+	# achievement_state[ACHIEVEMENTS.A_LITTLE_REST] = ACHIEVEMENT_STATE.JUST_ACHIEVED
 
 	

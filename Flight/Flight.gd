@@ -1,6 +1,9 @@
 extends Node2D
 
+# I would fail someone in an interview if they chose names like this, but I'm
+# the boss now.
 var achievementDisplay = preload("res://UI/AchievementDisplay.tscn")
+var achievementShower = preload("res://UI/AchievementShower.tscn")
 
 export var GRAVITY = 120
 export var MAX_GRAVITY = 300
@@ -30,7 +33,6 @@ onready var text_display = $TextDisplay
 onready var player = $Launch/Player
 onready var audioStreamPlayer : AudioStreamPlayer2D = $Boulder/BouncePlayer
 onready var bottom_bar : FlightBottomBar = $FlightBottomBar
-# onready var achievement_display = $AchievementDisplay
 
 enum SUPERBOUNCE_STATE {NONE, BOUNCING}
 enum SOUNDS { LAUNCH, BOUNCE, SUPERBOUNCE, PARACHUTE, SLINGSHOT, LAVA }
@@ -98,14 +100,22 @@ func handle_entered_lava():
 	play_sound(SOUNDS.LAVA)
 
 func freeze_and_display_scores(aborted):
-	scoreScreen.set_title(aborted)
 	launch_state = LAUNCH_STATE.FROZEN
+	boulder.stop_animating()
+	var achievement_shower = achievementShower.instance()
+	add_child(achievement_shower)
+	# Avoid a race where maybe_display_achievements returns immediately,
+	# before we yield to its signal
+	achievement_shower.call_deferred("maybe_display_achievements")
+	yield(achievement_shower, "no_achievements_are_displayed")
+	achievement_shower.queue_free()
+	scoreScreen.set_title(aborted)
 	scoreScreen.tween_scores(flightscore.max_height(),
 	 flightscore.max_distance(),
 	 flightscore.duration())
 	scoreScreen.visible = true
 	flightscore.reset_scores(boulder)
-	boulder.stop_animating()
+	
 	State.launch_day += 1
 
 func handle_abort():
@@ -114,10 +124,12 @@ func handle_abort():
 
 func handle_fact_display_gone():
 	launch_state = LAUNCH_STATE.AWAITING_LAUNCH
-	print("achievement display showing")
+	# If we just hide and show the achievement display the text for it doesn't
+	# show up but its collision boxes do? Worth debugging to understand godot
+	# but just instancing every time seems to fix it.
 	achievement_display = achievementDisplay.instance()
 	add_child(achievement_display)
-
+ 
 func _ready():
 	State.display_fact_if_we_havent_yet(State.FACT.INTRO)
 	flightscore = FlightScore.new(boulder)
@@ -127,9 +139,6 @@ func _ready():
 	_ignore = boulder.connect("boulder_clicked", self, "handle_boulder_clicked")
 	_ignore = text_display.connect("no_facts_are_displayed", self, "handle_fact_display_gone")
 
-	# Make it easy to move the boulder around for testing purposes and then snap it
-	# back to where it needs to be when we aren't testing 
-	# boulder.position = Vector2(-1230, 448)
 	set_positions_for_current_block_height()
 	
 	oil_remaining = State.oil_level

@@ -1,11 +1,10 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=18 format=2]
 
-[ext_resource path="res://Prototype Sprites/launch-prototype.png" type="Texture" id=1]
+[ext_resource path="res://Flight/Sprites/launch-final.png" type="Texture" id=1]
 [ext_resource path="res://Boulder/Boulder.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Terrain/SlopeGentle.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Flight/Flight.gd" type="Script" id=4]
 [ext_resource path="res://UI/ScoreModal.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Prototype Sprites/player-prototype.png" type="Texture" id=6]
 [ext_resource path="res://Flight/Platform.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Terrain/SlopeModerate.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Terrain/Flat.tscn" type="PackedScene" id=9]
@@ -31,7 +30,7 @@ __meta__ = {
 [node name="TextDisplay" parent="." instance=ExtResource( 17 )]
 
 [node name="Boulder" parent="." instance=ExtResource( 2 )]
-position = Vector2( 2367, 33 )
+position = Vector2( -1229, 448 )
 
 [node name="Camera2D" type="Camera2D" parent="Boulder"]
 position = Vector2( 1, 2 )
@@ -52,12 +51,6 @@ z_index = -1
 [node name="Background" type="Sprite" parent="Launch"]
 texture = ExtResource( 1 )
 centered = false
-
-[node name="PlayerOld" type="Sprite" parent="Launch"]
-visible = false
-position = Vector2( 256, 476 )
-z_index = 1
-texture = ExtResource( 6 )
 
 [node name="PrimarySlope" type="StaticBody2D" parent="Launch"]
 collision_layer = 2
@@ -210,6 +203,13 @@ margin_left = -497.0
 margin_top = 425.0
 margin_right = 2579.0
 margin_bottom = 798.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect34" type="ColorRect" parent="Filler"]
+margin_left = 142.0
+margin_top = 796.0
+margin_right = 3218.0
+margin_bottom = 1169.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect7" type="ColorRect" parent="Filler"]

@@ -4,8 +4,8 @@
 [ext_resource path="res://UI/AchievementText.gd" type="Script" id=2]
 
 [node name="Control" type="Control"]
-margin_right = 138.0
-margin_bottom = 58.0
+margin_right = 146.0
+margin_bottom = 72.0
 script = ExtResource( 2 )
 
 [node name="Uncompleted" parent="." instance=ExtResource( 1 )]
@@ -23,7 +23,7 @@ margin_left = 4.0
 margin_top = 4.0
 margin_right = -4.0
 margin_bottom = -4.0
-text = "[Calmness: 100] 
-Make 250 calmness from a single launch"
+text = "[Rest: 100] 
+Achieve a launch duration of at least 10 seconds"
 align = 1
 autowrap = true

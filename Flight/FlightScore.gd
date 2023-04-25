@@ -7,6 +7,7 @@ var starting_y = 0
 var distance = 0
 var height = 0
 var duration_in_frames = 0
+const LITTLE_REST_ACHIEVEMENT_DURATION = 15 * 60
 
 func reset_scores(boulder : Boulder):
 	distance = boulder.position.x
@@ -22,6 +23,10 @@ func tick(boulder : Boulder):
 	distance = max(boulder.position.x, distance)
 	height = max(height, boulder.determine_height_above_ground())
 	duration_in_frames += 1
+	
+	# This should clearly not be hardcoded, but meh
+	if duration_in_frames == LITTLE_REST_ACHIEVEMENT_DURATION:
+		State.achieve_if_we_havent_yet(State.ACHIEVEMENTS.A_LITTLE_REST)
 
 func max_distance():
 	return (distance - starting_x)
