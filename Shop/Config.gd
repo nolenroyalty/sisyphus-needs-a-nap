@@ -161,3 +161,4 @@ static func purchase(kind):
 		return false
 	_update_state_after_purchase(kind)
 	return true
+
