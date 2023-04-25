@@ -2,9 +2,9 @@ extends Node
 
 enum ITEM { BLOCK = 1, PARACHUTE = 2, OIL = 3, STRENGTH = 4, SLINGSHOT = 5, GRIFFIN = 6}
 
-const MAX_BLOCK_HEIGHT = 9
+const MAX_BLOCK_HEIGHT = 12
 const MAX_OIL_LEVEL = 3
-const MAX_STRENGTH_LEVEL = 3
+const MAX_STRENGTH_LEVEL = 6
 
 static func next_block_cost():
 	# Learn to fly has each level approximately double, but with substantial jitter
@@ -17,7 +17,12 @@ static func next_block_cost():
 		4: return 400
 		5: return 500
 		6: return 675
+		7: return 750
+		8: return 800
 		9: return 850
+		10: return 900
+		11: return 1050
+		12: return 0
 		_:
 			print("unexpected current block height")
 			return 0
@@ -25,10 +30,13 @@ static func next_block_cost():
 static func next_strength_cost():
 	# We should update these numbers to diverge from block cost
 	match State.strength_level:
-		0: return 100
-		1: return 450
-		2: return 1050
-		3: return 0
+		0: return 85
+		1: return 200
+		2: return 450
+		3: return 600
+		4: return 900
+		5: return 1800
+		6: return 0
 		_:
 			print("unexpected current strength")
 			return 0

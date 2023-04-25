@@ -18,7 +18,7 @@ var time_left_until_tick = 0
 var mouse_in_area = false
 
 # Totally made up
-const MAXIMUM_HEIGHT_ABOVE_GROUND = 8092
+const MAXIMUM_HEIGHT_ABOVE_GROUND = 16384
 const STARTING_GUESS_FOR_HEIGHT_ABOVE_GROUND = 128
 
 func determine_height_above_ground():

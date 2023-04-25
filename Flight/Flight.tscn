@@ -217,6 +217,26 @@ position = Vector2( 15327, -8850 )
 [node name="EndingSlope8" parent="Terrain" instance=ExtResource( 16 )]
 position = Vector2( 15579, -9877 )
 
+[node name="EndingSlopeBack1" parent="Terrain" instance=ExtResource( 16 )]
+position = Vector2( -1648, -89 )
+scale = Vector2( -1, 1 )
+
+[node name="EndingSlopeBack2" parent="Terrain" instance=ExtResource( 16 )]
+position = Vector2( -1900, -1116 )
+scale = Vector2( -1, 1 )
+
+[node name="EndingSlopeBack3" parent="Terrain" instance=ExtResource( 16 )]
+position = Vector2( -2152, -2143 )
+scale = Vector2( -1, 1 )
+
+[node name="EndingSlopeBack4" parent="Terrain" instance=ExtResource( 16 )]
+position = Vector2( -2404, -3170 )
+scale = Vector2( -1, 1 )
+
+[node name="EndingSlopeBack5" parent="Terrain" instance=ExtResource( 16 )]
+position = Vector2( -2656, -4197 )
+scale = Vector2( -1, 1 )
+
 [node name="Filler" type="Node2D" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="Filler"]

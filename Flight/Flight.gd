@@ -4,27 +4,29 @@ extends Node2D
 # the boss now.
 var achievementDisplay = preload("res://UI/AchievementDisplay.tscn")
 var achievementShower = preload("res://UI/AchievementShower.tscn")
+var rng = RandomNumberGenerator.new()
 
 export var GRAVITY = 120
 export var MAX_GRAVITY = 300
 export var BOUNCE_PENALTY = 0.2
 
 export var BACKWARDS_ROLL_SPEED = 1.0
-export var DEFAULT_STARTING_VELOCITY = Vector2(250, -100)
+export var DEFAULT_STARTING_VELOCITY = Vector2(250, -110)
 export var SUPERBOUNCE_FRAMES = 10
 export var MIN_ROTATION = 1.0
 export var MAX_ROTATION = 10.0
 export var PARACHUTE_X_SPEED_REDUCTION = 0.85
 export var PARACHUTE_Y_SPEED_REDUCTION = 0.25
-export var PARACHUTE_GRAVITY_REDUCTION = 0.4
-export var PARACHUTE_MAX_GRAVITY = 50
+export var PARACHUTE_GRAVITY_REDUCTION = 0.40
+export(float) var PARACHUTE_MAX_GRAVITY = PARACHUTE_GRAVITY_REDUCTION * MAX_GRAVITY
 export var STRENGTH_INCREASE_FACTOR = 1.3
 export var SLINGSHOT_BOOST = 100
 export var GRIFFIN_BOOST = Vector2(10, -150)
 const MAX_EXPECTED_SPEED_FOR_ROTATION = 250
-const DISTANCE_AT_WHICH_WE_FLAG_A_LANDMARK = 1000
+const DISTANCE_AT_WHICH_WE_FLAG_A_LANDMARK = 1600
 const MAX_TOTAL_DOWNHILL_BOUNCES = 50
-const MAX_CONSECUTIVE_DOWNHILL_BOUNCES = 3
+const MAX_CONSECUTIVE_DOWNHILL_BOUNCES = 8
+const MAX_CONSECUTIVE_SLOW_BOUNCES = 3
 const MAX_CONSECUTIVE_CAVE_BOUNCES = 5
 const SLINGSHOT_AMMO = 4
 const FRAMES_TO_SPEND_IN_LAVA = 60 * 2
@@ -38,7 +40,7 @@ onready var audioStreamPlayer : AudioStreamPlayer2D = $Boulder/BouncePlayer
 onready var bottom_bar : FlightBottomBar = $FlightBottomBar
 
 enum SUPERBOUNCE_STATE {NONE, BOUNCING}
-enum SOUNDS { LAUNCH, BOUNCE, SUPERBOUNCE, PARACHUTE, SLINGSHOT, LAVA }
+enum SOUNDS { LAUNCH, BOUNCE, SUPERBOUNCE, PARACHUTE, SLINGSHOT, LAVA, GRIFFIN }
 enum LAUNCH_STATE { DISPLAYING_FACTS, AWAITING_LAUNCH, LAUNCHED, GRIFFIN_DEPLOYED, IN_LAVA, FROZEN }
 
 var velocity = Vector2()
@@ -46,6 +48,7 @@ var frames_in_lava = 0
 var frozen = true
 var total_downhill_bounces = 0
 var consecutive_downhill_bounces = 0
+var consecutive_slow_bounces
 var consecutive_cave_bounces = 0
 var superbounce_frames_remaining = 0
 var oil_remaining = 0
@@ -68,24 +71,27 @@ func calculate_gravity():
 func calculate_starting_velocity():
 	var starting_velocity = DEFAULT_STARTING_VELOCITY
 	var multiplier = 1
+	var variance = rng.randfn(0, 0.1)
+
 	match State.strength_level:
 		0: multiplier = 1.0
-		1: multiplier = 1.5
-		2: multiplier = 1.9
-		3: multiplier = 2.3
+		1: multiplier = 1.35
+		2: multiplier = 1.7
+		3: multiplier = 1.9
+		4: multiplier = 2.1
+		5: multiplier = 2.25
+		6: multiplier = 2.6
 		_:
 			print("Unknown strength level %d" % State.strength_level)
 	
+	
 	starting_velocity *= multiplier
+	print("velocity: %s variance: %s -> %s" % [starting_velocity, variance, starting_velocity * variance])
+	starting_velocity += starting_velocity * variance
 	return starting_velocity
 
 func set_positions_for_current_block_height():
-	var b = State.block_height
-	var platform_offset = 0
-	while b > 0:
-		platform_offset += 21
-		if b % 3 == 0: platform_offset += 1
-		b -= 1
+	var platform_offset = State.block_height * 24
 	boulder.position.y -= platform_offset
 	player.position.y -= platform_offset
 
@@ -136,6 +142,7 @@ func handle_fact_display_gone():
 	add_child(achievement_display)
  
 func _ready():
+	rng.randomize()
 	State.display_fact_if_we_havent_yet(State.FACT.INTRO)
 	flightscore = FlightScore.new(boulder)
 	var _ignore = scoreScreen.connect("continue_pressed", self, "continue_pressed")
@@ -175,6 +182,7 @@ func play_sound(sound):
 		SOUNDS.PARACHUTE: stream = load("res://sounds/parachute1.wav")
 		SOUNDS.SLINGSHOT: stream = load("res://sounds/slingshot1.wav")
 		SOUNDS.LAVA: stream = load("res://sounds/lava1.wav")
+		SOUNDS.GRIFFIN: stream = load("res://sounds/griffin1.wav")
 		_: print("Unknown sound")
 	if stream:
 		audioStreamPlayer.stream = stream
@@ -219,32 +227,39 @@ func handle_boulder_clicked(vector_from_click_to_boulder_center):
 		bottom_bar.set_slingshot_ammo(slingshot_shots_remaining)
 		play_sound(SOUNDS.SLINGSHOT)
 
-func is_rolling_downhill():
+func is_downhill_bounce():
+	return velocity.x < 0
+
+func is_slow_bounce():
 	var vx = abs(velocity.x)
 	var vy = abs(velocity.y)
-	if vx < 20 and vy < 20: return true
-	if vx + vy < 50: return true
-	return velocity.x < 0
+	return (vx < 20 and vy < 20) or (vx + vy) < 50
+
+func is_cave_bounce():
+	return in_cave
 	
 func should_freeze_after_this_bounce():
-	if in_cave:
-		consecutive_cave_bounces += 1
-		consecutive_downhill_bounces = 0
-		return consecutive_cave_bounces >= MAX_CONSECUTIVE_CAVE_BOUNCES
-	
-	if is_rolling_downhill():
-		total_downhill_bounces += 1
+	if is_downhill_bounce():
 		consecutive_downhill_bounces += 1
+		total_downhill_bounces += 1
 	else:
 		consecutive_downhill_bounces = 0
 	
-	if consecutive_downhill_bounces >= MAX_CONSECUTIVE_DOWNHILL_BOUNCES \
-		or total_downhill_bounces >= MAX_TOTAL_DOWNHILL_BOUNCES:
-		total_downhill_bounces = 0
-		consecutive_downhill_bounces = 0
-		return true
+	if is_cave_bounce():
+		consecutive_cave_bounces += 1
+	else:
+		consecutive_cave_bounces = 0
 	
-	return false
+	if is_slow_bounce():
+		consecutive_slow_bounces += 1
+	else:
+		consecutive_slow_bounces = 0
+	
+
+	return consecutive_cave_bounces >= MAX_CONSECUTIVE_CAVE_BOUNCES \
+		or consecutive_downhill_bounces >= MAX_CONSECUTIVE_DOWNHILL_BOUNCES \
+		or consecutive_slow_bounces >= MAX_CONSECUTIVE_SLOW_BOUNCES \
+		or total_downhill_bounces >= MAX_TOTAL_DOWNHILL_BOUNCES
 
 func reset_superbounce_state():
 	superbounce_state = SUPERBOUNCE_STATE.NONE
@@ -301,6 +316,7 @@ func deploy_griffin():
 	launch_state = LAUNCH_STATE.GRIFFIN_DEPLOYED
 	bottom_bar.deploy_griffin()
 	boulder.show_griffin()
+	play_sound(SOUNDS.GRIFFIN)
 	yield(get_tree().create_timer(GRIFFIN_DEPLOY_TIME), "timeout")
 	boulder.hide_griffin()
 	launch_state = LAUNCH_STATE.LAUNCHED
@@ -404,6 +420,7 @@ func process_launched(delta):
 func process_griffin(delta):
 	velocity += GRIFFIN_BOOST * delta
 	boulder.move_and_collide(velocity * delta)
+	flightscore.tick(boulder)
 	maybe_tick_hud()
 	maybe_display_landmark()
  

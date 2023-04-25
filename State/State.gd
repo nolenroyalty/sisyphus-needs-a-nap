@@ -20,7 +20,7 @@ enum ACHIEVEMENT_STATE { NOT_YET_ACHIEVED, JUST_ACHIEVED, ALREADY_ACHIEVED }
 
 const WINNING_DURATION_IN_SECONDS = 60
 
-var rest = 3000
+var rest = 0
 var block_height : int = 0
 var oil_level = 0
 var has_parachute = false
@@ -28,7 +28,7 @@ var has_slingshot = false
 var has_griffin = false
 var strength_level = 0
 var launch_day = 1
-var testing_level = 3
+var testing_level = 0
 
 var fact_state = {}
 var achievement_state = {}
@@ -136,9 +136,9 @@ func achievement_reward(achievement):
 		ACHIEVEMENTS.INTO_LAVA:
 			return 100
 		ACHIEVEMENTS.PASSED_LAVA:
-			return 500
-		ACHIEVEMENTS.PASSED_BIG_SLOPE:
 			return 1000
+		ACHIEVEMENTS.PASSED_BIG_SLOPE:
+			return 2300
 		ACHIEVEMENTS.NAP_ACHIEVED:
 			return 42069
 		_:
