@@ -29,7 +29,7 @@ var has_slingshot = false
 var has_griffin = false
 var strength_level = 0
 var launch_day = 1
-var testing_level = 0
+var testing_level = 1
 
 var fact_state = {}
 var achievement_state = {}

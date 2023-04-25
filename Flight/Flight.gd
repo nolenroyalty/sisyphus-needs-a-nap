@@ -394,7 +394,8 @@ func maybe_tick_hud():
 	bottom_bar.maybe_update_stats(
 		flightscore.current_distance(boulder),
 		boulder.determine_height_above_ground(),
-		flightscore.duration())
+		flightscore.duration(),
+		in_cave)
 
 func process_launched(delta):
 	if Input.is_action_just_pressed("superbounce"): handle_superbounce_pressed()

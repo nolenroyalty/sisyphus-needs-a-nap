@@ -50,12 +50,14 @@ func abort():
 func set_slingshot_ammo(ammo):
 	slingshot_gadget.set_ammo(ammo)
 
-func maybe_update_stats(distance, height, duration):
+func maybe_update_stats(distance, height, duration, in_cave):
 	frame_count += 1
 	if frame_count % 5 == 0:
+		if in_cave: height = "in a cave!"
+		else: height = int(height) - 15
 		# Subtract the boulder's height for display purposes.
 		# Like with scoring, we divide the boulder's distance by 10 for display purposes
-		$Stats/Values.text = "%s\n%s\n%.1f" % [int(distance / 10.0), int(height) - 15, duration]
+		$Stats/Values.text = "%s\n%s\n%.1f" % [int(distance / 10.0), height, duration]
 
 func _ready():
 	if not State.has_parachute:
