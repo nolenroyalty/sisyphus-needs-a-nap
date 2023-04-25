@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://UI/AchievementText.tscn" type="PackedScene" id=1]
+[ext_resource path="res://UI/AchievementDisplay.gd" type="Script" id=2]
+[ext_resource path="res://UI/AchievementUncompleted.tscn" type="PackedScene" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 69, 71.5 )
+
+[node name="AchievementDisplay" type="CanvasLayer"]
+script = ExtResource( 2 )
+
+[node name="AchievementList" type="VBoxContainer" parent="."]
+margin_left = 264.0
+margin_top = 4.0
+margin_right = 397.0
+margin_bottom = 44.0
+mouse_filter = 2
+custom_constants/separation = 15
+
+[node name="Control" type="Control" parent="AchievementList"]
+margin_right = 133.0
+mouse_filter = 2
+
+[node name="Uncompleted" parent="AchievementList/Control" instance=ExtResource( 3 )]
+margin_right = 116.0
+margin_bottom = 17.0
+
+[node name="Label" type="Label" parent="AchievementList/Control/Uncompleted"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Achievements"
+align = 1
+
+[node name="AchievementText" parent="." instance=ExtResource( 1 )]
+margin_left = 123.0
+margin_top = 4.0
+margin_right = 261.0
+margin_bottom = 62.0
+
+[node name="WholeMouseArea" type="Area2D" parent="."]
+position = Vector2( 13, 0 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WholeMouseArea"]
+position = Vector2( 317, 71.5 )
+shape = SubResource( 1 )

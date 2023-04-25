@@ -26,6 +26,7 @@ func maybe_display_facts():
 				yield(get_tree().create_timer(.1), "timeout")
 				node.hide()
 			State.fact_was_displayed(fact)
+		
 	emit_signal("no_facts_are_displayed")
 
 func _ready():

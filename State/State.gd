@@ -1,10 +1,12 @@
 extends Node
 
+signal achievement_was_displayed(achievement)
+
 enum FACT { INTRO, PARACHUTE, SLINGSHOT }
 enum FACT_STATE { NOT_YET_DISPLAYED, SHOULD_DISPLAY, ALREADY_DISPLAYED }
 
 enum ACHIEVEMENTS {
-	WELL_RESTED,
+	A_LITTLE_REST,
 	INTO_CAVE,
 	CAVE_BOTTOM,
 	PASSED_CAVE,
@@ -64,6 +66,7 @@ func achieve_if_we_havent_yet(achievement):
 
 func achievement_was_displayed(achievement):
 	achievement_state[achievement] = ACHIEVEMENT_STATE.ALREADY_ACHIEVED
+	emit_signal("achievement_was_displayed", achievement)
 
 func achievements_to_display():
 	var achievements_to_display = []
@@ -72,6 +75,70 @@ func achievements_to_display():
 			achievements_to_display.append(achievement)
 	return achievements_to_display
 
+func achievement_text(achievement):
+	match achievement:
+		ACHIEVEMENTS.A_LITTLE_REST:
+			return "A Little Rest"
+		ACHIEVEMENTS.INTO_CAVE:
+			return "Explorer"
+		ACHIEVEMENTS.CAVE_BOTTOM:
+			return "Echo (echo) (echo)"
+		ACHIEVEMENTS.PASSED_CAVE:
+			return "Long Distance"
+		ACHIEVEMENTS.INTO_LAVA:
+			return "Ouch"
+		ACHIEVEMENTS.PASSED_LAVA:
+			return "Longer Distance"
+		ACHIEVEMENTS.PASSED_BIG_SLOPE:
+			return "That Was Tall"
+		ACHIEVEMENTS.NAP_ACHIEVED:
+			return "Nap Achieved"
+		_:
+			print("ERROR: unknown achievement: " + str(achievement))
+
+func achievement_description(achievement):
+	match achievement:
+		ACHIEVEMENTS.A_LITTLE_REST:
+			return "Make 250 calmness from a single launch"
+		ACHIEVEMENTS.INTO_CAVE:
+			return "Enter the cave"
+		ACHIEVEMENTS.CAVE_BOTTOM:
+			return "Reach the bottom of the cave"
+		ACHIEVEMENTS.PASSED_CAVE:
+			return "Get past the cave"
+		ACHIEVEMENTS.INTO_LAVA:
+			return "Launch yourself into the lava. Ouch!"
+		ACHIEVEMENTS.PASSED_LAVA:
+			return "Make it past the lava pit"
+		ACHIEVEMENTS.PASSED_BIG_SLOPE:
+			return "Make it past the big slope"
+		ACHIEVEMENTS.NAP_ACHIEVED:
+			return "Achieve nap nirvana"
+		_:
+			print("ERROR: unknown achievement: " + str(achievement))
+
+# If we were more principled I think this would live in config.  But oh well.  We're not.
+func achievement_reward(achievement):
+	match achievement:
+		ACHIEVEMENTS.A_LITTLE_REST:
+			return 250
+		ACHIEVEMENTS.INTO_CAVE:
+			return 250
+		ACHIEVEMENTS.CAVE_BOTTOM:
+			return 300
+		ACHIEVEMENTS.PASSED_CAVE:
+			return 400
+		ACHIEVEMENTS.INTO_LAVA:
+			return 100
+		ACHIEVEMENTS.PASSED_LAVA:
+			return 500
+		ACHIEVEMENTS.PASSED_BIG_SLOPE:
+			return 1000
+		ACHIEVEMENTS.NAP_ACHIEVED:
+			return 42069
+		_:
+			print("ERROR: unknown achievement: " + str(achievement))
+
 func _ready():
 	# set_test_values()
 	for fact in FACT.values():
@@ -79,3 +146,7 @@ func _ready():
 	
 	for achievement in ACHIEVEMENTS.values():
 		achievement_state[achievement] = ACHIEVEMENT_STATE.NOT_YET_ACHIEVED
+	
+	achievement_state[ACHIEVEMENTS.A_LITTLE_REST] = ACHIEVEMENT_STATE.ALREADY_ACHIEVED
+
+	

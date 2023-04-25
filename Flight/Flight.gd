@@ -1,5 +1,6 @@
 extends Node2D
 
+var achievementDisplay = preload("res://UI/AchievementDisplay.tscn")
 
 export var GRAVITY = 120
 export var MAX_GRAVITY = 300
@@ -29,6 +30,7 @@ onready var text_display = $TextDisplay
 onready var player = $Launch/Player
 onready var audioStreamPlayer : AudioStreamPlayer2D = $Boulder/BouncePlayer
 onready var bottom_bar : FlightBottomBar = $FlightBottomBar
+# onready var achievement_display = $AchievementDisplay
 
 enum SUPERBOUNCE_STATE {NONE, BOUNCING}
 enum SOUNDS { LAUNCH, BOUNCE, SUPERBOUNCE, PARACHUTE, SLINGSHOT, LAVA }
@@ -48,7 +50,7 @@ var parachute_deployed = false
 var in_cave = false
 var landmarks = []
 var launch_state = LAUNCH_STATE.DISPLAYING_FACTS
-
+var achievement_display = null
 
 func calculate_gravity():
 	if parachute_deployed and velocity.y > 0:
@@ -112,6 +114,9 @@ func handle_abort():
 
 func handle_fact_display_gone():
 	launch_state = LAUNCH_STATE.AWAITING_LAUNCH
+	print("achievement display showing")
+	achievement_display = achievementDisplay.instance()
+	add_child(achievement_display)
 
 func _ready():
 	State.display_fact_if_we_havent_yet(State.FACT.INTRO)
@@ -121,6 +126,7 @@ func _ready():
 	_ignore = bottom_bar.connect("abort_clicked", self, "handle_abort")
 	_ignore = boulder.connect("boulder_clicked", self, "handle_boulder_clicked")
 	_ignore = text_display.connect("no_facts_are_displayed", self, "handle_fact_display_gone")
+
 	# Make it easy to move the boulder around for testing purposes and then snap it
 	# back to where it needs to be when we aren't testing 
 	# boulder.position = Vector2(-1230, 448)
@@ -323,6 +329,7 @@ func process_lava(delta):
 		boulder.move_and_collide(velocity * delta)
 
 func launch_boulder():
+	achievement_display.queue_free()
 	launch_state = LAUNCH_STATE.LAUNCHED
 	velocity = calculate_starting_velocity()
 	play_sound(SOUNDS.LAUNCH)

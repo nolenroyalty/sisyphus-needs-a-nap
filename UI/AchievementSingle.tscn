@@ -1,0 +1,110 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://UI/AchievementUncompleted.tscn" type="PackedScene" id=1]
+[ext_resource path="res://UI/AchievementCompleted.tscn" type="PackedScene" id=2]
+[ext_resource path="res://UI/AchievementSingle.gd" type="Script" id=3]
+[ext_resource path="res://UI/Sprites/checkmark.png" type="Texture" id=4]
+
+[sub_resource type="Animation" id=1]
+resource_name = "Completed"
+tracks/0/type = "method"
+tracks/0/path = NodePath("Completed")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"values": [  ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Completed:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Checkmark:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Completed:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Checkmark:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 57.25, 7 )
+
+[node name="AchievementSingle" type="Control" groups=["achievement_single"]]
+mouse_filter = 1
+script = ExtResource( 3 )
+
+[node name="Uncompleted" parent="." instance=ExtResource( 1 )]
+margin_right = 116.0
+margin_bottom = 16.0
+
+[node name="Completed" parent="." instance=ExtResource( 2 )]
+modulate = Color( 1, 1, 1, 0 )
+margin_right = 116.0
+margin_bottom = 16.0
+
+[node name="Label" type="Label" parent="."]
+margin_left = 3.0
+margin_top = 1.0
+margin_right = 127.0
+margin_bottom = 15.0
+text = "Longer Distance"
+
+[node name="Checkmark" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 108, 9 )
+texture = ExtResource( 4 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Completed = SubResource( 1 )
+anims/RESET = SubResource( 2 )
+
+[node name="MouseArea" type="Area2D" parent="."]
+position = Vector2( 0, -1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MouseArea"]
+position = Vector2( 57.75, 9 )
+shape = SubResource( 3 )

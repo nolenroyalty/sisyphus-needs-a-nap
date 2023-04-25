@@ -29,6 +29,8 @@ var dialogue = [
 	["thwacking the boulder", s],
 	["yeah", f, 0.5],
 	["and then taking a nap while it falls back down", f],
+	["oh", s, 0.5],
+	["i see", s, 0.5],
 	["i mean", s],
 	["cant hurt", s]
 ]

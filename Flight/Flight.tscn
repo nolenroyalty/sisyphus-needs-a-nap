@@ -28,8 +28,10 @@ __meta__ = {
 
 [node name="FlightBottomBar" parent="." instance=ExtResource( 13 )]
 
+[node name="TextDisplay" parent="." instance=ExtResource( 17 )]
+
 [node name="Boulder" parent="." instance=ExtResource( 2 )]
-position = Vector2( 8528, -1026 )
+position = Vector2( 2367, 33 )
 
 [node name="Camera2D" type="Camera2D" parent="Boulder"]
 position = Vector2( 1, 2 )
@@ -433,5 +435,3 @@ margin_top = 187.0
 margin_right = 1942.0
 margin_bottom = 362.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
-
-[node name="TextDisplay" parent="." instance=ExtResource( 17 )]
