@@ -20,12 +20,15 @@ export var PARACHUTE_GRAVITY_REDUCTION = 0.4
 export var PARACHUTE_MAX_GRAVITY = 50
 export var STRENGTH_INCREASE_FACTOR = 1.3
 export var SLINGSHOT_BOOST = 100
+export var GRIFFIN_BOOST = Vector2(10, -150)
 const MAX_EXPECTED_SPEED_FOR_ROTATION = 250
 const DISTANCE_AT_WHICH_WE_FLAG_A_LANDMARK = 1000
 const MAX_TOTAL_DOWNHILL_BOUNCES = 50
-const MAX_CONSECUTIVE_DOWNHILL_BOUNCES = 2
+const MAX_CONSECUTIVE_DOWNHILL_BOUNCES = 3
+const MAX_CONSECUTIVE_CAVE_BOUNCES = 5
 const SLINGSHOT_AMMO = 4
 const FRAMES_TO_SPEND_IN_LAVA = 60 * 2
+const GRIFFIN_DEPLOY_TIME = 1.5
 
 onready var boulder = $Boulder
 onready var scoreScreen = $ScoreScreen
@@ -36,19 +39,21 @@ onready var bottom_bar : FlightBottomBar = $FlightBottomBar
 
 enum SUPERBOUNCE_STATE {NONE, BOUNCING}
 enum SOUNDS { LAUNCH, BOUNCE, SUPERBOUNCE, PARACHUTE, SLINGSHOT, LAVA }
-enum LAUNCH_STATE { DISPLAYING_FACTS, AWAITING_LAUNCH, LAUNCHED, IN_LAVA, FROZEN }
+enum LAUNCH_STATE { DISPLAYING_FACTS, AWAITING_LAUNCH, LAUNCHED, GRIFFIN_DEPLOYED, IN_LAVA, FROZEN }
 
 var velocity = Vector2()
 var frames_in_lava = 0
 var frozen = true
 var total_downhill_bounces = 0
 var consecutive_downhill_bounces = 0
+var consecutive_cave_bounces = 0
 var superbounce_frames_remaining = 0
 var oil_remaining = 0
 var slingshot_shots_remaining = 0
 var superbounce_state = SUPERBOUNCE_STATE.NONE
 var flightscore : FlightScore
 var parachute_deployed = false
+var griffin_deployed = false
 var in_cave = false
 var landmarks = []
 var launch_state = LAUNCH_STATE.DISPLAYING_FACTS
@@ -218,26 +223,27 @@ func is_rolling_downhill():
 	var vy = abs(velocity.y)
 	if vx < 20 and vy < 20: return true
 	if vx + vy < 50: return true
-	
-	if in_cave:
-		return velocity.y < 0
-	else:
-		return velocity.x < 0
+	return velocity.x < 0
 	
 func should_freeze_after_this_bounce():
+	if in_cave:
+		consecutive_cave_bounces += 1
+		consecutive_downhill_bounces = 0
+		return consecutive_cave_bounces >= MAX_CONSECUTIVE_CAVE_BOUNCES
+	
 	if is_rolling_downhill():
-		print("rolling downhill! in cave: %s" % in_cave)
 		total_downhill_bounces += 1
 		consecutive_downhill_bounces += 1
 	else:
 		consecutive_downhill_bounces = 0
 	
-	if consecutive_downhill_bounces > MAX_CONSECUTIVE_DOWNHILL_BOUNCES or total_downhill_bounces > MAX_TOTAL_DOWNHILL_BOUNCES:
+	if consecutive_downhill_bounces >= MAX_CONSECUTIVE_DOWNHILL_BOUNCES \
+		or total_downhill_bounces >= MAX_TOTAL_DOWNHILL_BOUNCES:
 		total_downhill_bounces = 0
 		consecutive_downhill_bounces = 0
 		return true
-	else:
-		return false
+	
+	return false
 
 func reset_superbounce_state():
 	superbounce_state = SUPERBOUNCE_STATE.NONE
@@ -285,6 +291,17 @@ func deploy_parachute():
 		velocity.y *= PARACHUTE_Y_SPEED_REDUCTION
 	bottom_bar.deploy_parachute()
 	play_sound(SOUNDS.PARACHUTE)
+
+func can_deploy_griffin():
+	return State.has_griffin and !griffin_deployed and launch_state == LAUNCH_STATE.LAUNCHED
+
+func deploy_griffin():
+	griffin_deployed = true
+	launch_state = LAUNCH_STATE.GRIFFIN_DEPLOYED
+	boulder.show_griffin()
+	yield(get_tree().create_timer(GRIFFIN_DEPLOY_TIME), "timeout")
+	boulder.hide_griffin()
+	launch_state = LAUNCH_STATE.LAUNCHED
 
 func try_to_deploy_parachute_from_bottom_bar():
 	if can_deploy_parachute():
@@ -347,11 +364,14 @@ func process_launched(delta):
 	if Input.is_action_just_pressed("superbounce"): handle_superbounce_pressed()
 	if Input.is_action_just_pressed("deploy_parachute") and can_deploy_parachute():
 		deploy_parachute()
+	if Input.is_action_just_pressed("deploy_griffin") and can_deploy_griffin():
+		deploy_griffin()
 
 	tick_superbounce_state()
 	flightscore.tick(boulder)
 	maybe_display_landmark()
 	rotate_boulder()
+	bottom_bar.maybe_update_speed_and_height(velocity.x, boulder.determine_height_above_ground())
 
 	var collision = boulder.move_and_collide(velocity * delta)
 	if collision:
@@ -365,6 +385,11 @@ func process_launched(delta):
 	else:
 		apply_gravity(delta)
 
+func process_griffin(delta):
+	velocity += GRIFFIN_BOOST * delta
+	boulder.move_and_collide(velocity * delta)
+	bottom_bar.maybe_update_speed_and_height(velocity.length(), boulder.determine_height_above_ground())
+ 
 func _physics_process(delta):
 	match launch_state:
 		LAUNCH_STATE.AWAITING_LAUNCH:
@@ -372,4 +397,5 @@ func _physics_process(delta):
 				launch_boulder()
 		LAUNCH_STATE.IN_LAVA: process_lava(delta)
 		LAUNCH_STATE.LAUNCHED: process_launched(delta)
+		LAUNCH_STATE.GRIFFIN_DEPLOYED: process_griffin(delta)
 		_: pass

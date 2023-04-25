@@ -11,6 +11,8 @@ onready var parachute_gadget = $Gadgets/ParachuteIcon
 onready var slingshot_gadget = $Gadgets/SlingshotIcon
 onready var abort_button = $AbortButton
 
+var frame_count = 0
+
 func display_landmark(landmark, distance, angle):
 	landmark_label.show()
 	landmark_arrow.show()
@@ -37,6 +39,12 @@ func abort():
 
 func set_slingshot_ammo(ammo):
 	slingshot_gadget.set_ammo(ammo)
+
+func maybe_update_speed_and_height(speed, height):
+	frame_count += 1
+	if frame_count % 5 == 0:
+		# Subtract the boulder's height for display purposes.
+		$SpeedHeight/Values.text = "%s\n%s" % [int(speed), int(height) - 15]
 
 func _ready():
 	if not State.has_parachute:

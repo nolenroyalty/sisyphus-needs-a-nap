@@ -23,6 +23,7 @@ var block_height : int = 0
 var oil_level = 0
 var has_parachute = false
 var has_slingshot = false
+var has_griffin = true
 var strength_level = 0
 var launch_day = 1
 var testing_level = 1
@@ -141,7 +142,7 @@ func achievement_reward(achievement):
 			print("ERROR: unknown achievement: " + str(achievement))
 
 func _ready():
-	# set_test_values()
+	set_test_values()
 	for fact in FACT.values():
 		fact_state[fact] = FACT_STATE.NOT_YET_DISPLAYED
 	

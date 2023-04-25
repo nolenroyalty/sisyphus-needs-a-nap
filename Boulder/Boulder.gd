@@ -6,7 +6,11 @@ signal boulder_clicked(relative_vector)
 onready var ray : RayCast2D = $FloorRay
 onready var parachute_animation : AnimatedSprite = $ParachuteAnimation
 onready var deployed_parachute_collider : CollisionPolygon2D = $DeployedParachuteCollider
+onready var no_parachute_griffin : Sprite = $Griffins/NoParachuteDeployed
+onready var parachute_griffin : Sprite = $Griffins/ParachuteDeployed
+
 var parachute_deployed = false
+var griffin_visible = false
 
 enum ROTATION_DIRECTION { LEFT, RIGHT }
 var parachute_angle = ROTATION_DIRECTION.LEFT
@@ -45,7 +49,7 @@ func tick_parachute_rotation_angle():
 			ROTATION_DIRECTION.RIGHT:
 				parachute_angle = ROTATION_DIRECTION.LEFT
 	
-	match parachute_angle:
+	match parachute_angle: 
 		ROTATION_DIRECTION.LEFT:
 			rotation_degrees -= 1.0
 		ROTATION_DIRECTION.RIGHT:
@@ -62,6 +66,7 @@ func stop_animating():
 
 # Without this we'll also rotate our raycast, which we don't want!
 func rotate_sprite(degrees):
+	if griffin_visible: return
 	if parachute_deployed:
 		maybe_tick_parachute_rotation_angle()
 		# set_rotation_for_parachute_angle()
@@ -78,15 +83,29 @@ func update_oil_visibility(oil_remaining):
 func mouse_entered(): mouse_in_area = true
 func mouse_exited(): mouse_in_area = false
 
+func show_griffin():
+	if State.has_parachute and not parachute_deployed:
+		# Ensure that the griffin isn't grabbing over the parachute?
+		$Sprite.rotation_degrees = 180
+	
+	if parachute_deployed:
+		parachute_griffin.visible = true
+	else:
+		no_parachute_griffin.visible = true
+	
+	griffin_visible = true
+
+func hide_griffin():
+	no_parachute_griffin.visible = false
+	parachute_griffin.visible = false
+	griffin_visible = false
+
 func _ready():
-	# position = Vector2(50, 50)
-	# deploy_parachute()
 	deployed_parachute_collider.disabled = true
 	if State.has_parachute:
 		$Sprite.frame = 1
-	
-	update_oil_visibility(State.oil_level)
 
+	update_oil_visibility(State.oil_level)
 	var _ignore = $MouseClickArea.connect("mouse_entered", self, "mouse_entered")
 	_ignore = $MouseClickArea.connect("mouse_exited", self, "mouse_exited")
 
@@ -97,3 +116,4 @@ func _unhandled_input(event):
 			# print($MouseClickArea.position, event.position, position)
 			# print(event.position.distance_to($MouseClickArea.position))
 			emit_signal("boulder_clicked", $MouseClickArea.global_position - get_global_mouse_position())
+

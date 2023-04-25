@@ -56,3 +56,26 @@ custom_styles/focus = ExtResource( 6 )
 custom_styles/disabled = ExtResource( 6 )
 custom_styles/normal = ExtResource( 6 )
 text = "Abort"
+
+[node name="SpeedHeight" type="HBoxContainer" parent="."]
+margin_left = 4.0
+margin_top = 1.0
+margin_right = 80.0
+margin_bottom = 41.0
+
+[node name="Names" type="Label" parent="SpeedHeight"]
+margin_top = 4.0
+margin_right = 37.0
+margin_bottom = 35.0
+text = "Speed:
+Height:"
+
+[node name="Values" type="Label" parent="SpeedHeight"]
+margin_left = 41.0
+margin_top = 4.0
+margin_right = 76.0
+margin_bottom = 35.0
+size_flags_horizontal = 3
+text = "0
+0"
+align = 2
