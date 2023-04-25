@@ -46,6 +46,7 @@ static func next_oil_description():
 		0: return "Don't lose any speed on your first bounce"
 		1: return "Don't lose any speed on your first 2 bounces"
 		2: return "Don't lose any speed on your first 3 bounces"
+		3: return "No more upgrades available"
 		_:
 			print("unexpected current oil level")
 			return "Oiliness: 0"
