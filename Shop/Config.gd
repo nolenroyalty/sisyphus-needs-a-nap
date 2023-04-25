@@ -1,6 +1,6 @@
 extends Node
 
-enum ITEM { BLOCK = 1, PARACHUTE = 2, OIL = 3, STRENGTH = 4, SLINGSHOT = 5}
+enum ITEM { BLOCK = 1, PARACHUTE = 2, OIL = 3, STRENGTH = 4, SLINGSHOT = 5, GRIFFIN = 6}
 
 const MAX_BLOCK_HEIGHT = 9
 const MAX_OIL_LEVEL = 3
@@ -56,13 +56,15 @@ static func description(kind) -> String:
 		ITEM.BLOCK:
 			return "Launching the boulder from a higher height means it goes farther, right?"
 		ITEM.PARACHUTE:
-			return "Deploy with '1'.  Slows your descent but reduces your speed."
+			return "Deploy with '1'. Slows your descent but reduces your speed."
 		ITEM.OIL:
 			return next_oil_description()
 		ITEM.STRENGTH:
 			return "Get a little more swole and hit the boulder even farther"
 		ITEM.SLINGSHOT:
 			return "Click on the boulder to use. Allows you adjust the trajectory of the boulder slightly while it's in flight.  Comes with 4 shots."
+		ITEM.GRIFFIN:
+			return "Deploy with '2'. Hire a griffin to carry your boulder up the hill for a bit."
 		_:
 			return "unknown"
 
@@ -73,6 +75,7 @@ static func max_level (kind) -> int:
 		ITEM.OIL: return MAX_OIL_LEVEL
 		ITEM.STRENGTH: return MAX_STRENGTH_LEVEL
 		ITEM.SLINGSHOT: return 1
+		ITEM.GRIFFIN: return 1
 		_:
 			return 0
 
@@ -83,6 +86,7 @@ static func current_level (kind) -> int:
 		ITEM.OIL: return State.oil_level
 		ITEM.STRENGTH: return State.strength_level
 		ITEM.SLINGSHOT: return 1 if State.has_slingshot else 0
+		ITEM.GRIFFIN: return 1 if State.has_griffin else 0
 		_:
 			return 0
 
@@ -97,7 +101,10 @@ static func parachute_cost():
 	return 250
 
 static func slingshot_cost():
-	return 500
+	return 600
+
+static func griffin_cost():
+	return 2500
 
 static func cost(kind) -> int:
 	match kind:
@@ -111,6 +118,8 @@ static func cost(kind) -> int:
 			return next_strength_cost()
 		ITEM.SLINGSHOT:
 			return slingshot_cost()
+		ITEM.GRIFFIN:
+			return griffin_cost()
 		_:	
 			return 0
 
@@ -127,6 +136,8 @@ static func name(kind) -> String:
 			return "Strength: %d" % next_level(kind)
 		ITEM.SLINGSHOT:
 			return "Slingshot"
+		ITEM.GRIFFIN:
+			return "Griffin"
 		_:
 			return "unknown"
 
@@ -144,6 +155,9 @@ static func _update_state_after_purchase(kind) -> void:
 		ITEM.SLINGSHOT:
 			State.has_slingshot = true
 			State.display_fact_if_we_havent_yet(State.FACT.SLINGSHOT)
+		ITEM.GRIFFIN:
+			State.has_griffin = true
+			State.display_fact_if_we_havent_yet(State.FACT.GRIFFIN)
 		_:
 			print("unexpected item kind")
 

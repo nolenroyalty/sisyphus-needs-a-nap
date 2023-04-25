@@ -13,6 +13,8 @@ func nodes_for_fact(fact):
 			return [$Parachute]
 		State.FACT.SLINGSHOT:
 			return [$Slingshot]
+		State.FACT.GRIFFIN:
+			return [$Griffin]
 
 func maybe_display_facts():
 	for fact in State.fact_state:

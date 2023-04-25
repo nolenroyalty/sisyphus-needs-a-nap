@@ -2,7 +2,7 @@ extends Node
 
 signal achievement_was_displayed(achievement)
 
-enum FACT { INTRO, PARACHUTE, SLINGSHOT }
+enum FACT { INTRO, PARACHUTE, SLINGSHOT, GRIFFIN }
 enum FACT_STATE { NOT_YET_DISPLAYED, SHOULD_DISPLAY, ALREADY_DISPLAYED }
 
 enum ACHIEVEMENTS {

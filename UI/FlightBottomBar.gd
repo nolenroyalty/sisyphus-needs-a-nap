@@ -3,12 +3,14 @@ extends CanvasLayer
 class_name FlightBottomBar
 
 signal parachute_deployed_via_click
+signal griffin_deployed_via_click
 signal abort_clicked
 
 onready var landmark_label : Label = $LandmarkLabel
 onready var landmark_arrow : Sprite = $LandmarkArrow
 onready var parachute_gadget = $Gadgets/ParachuteIcon
 onready var slingshot_gadget = $Gadgets/SlingshotIcon
+onready var griffin_gadget = $Gadgets/GriffinIcon
 onready var abort_button = $AbortButton
 
 var frame_count = 0
@@ -34,6 +36,9 @@ func deploy_parachute():
 func propagate_parachute_deploy():
 	emit_signal("parachute_deployed_via_click")
 
+func propagate_griffin_deploy():
+	emit_signal("griffin_deployed_via_click")
+
 func abort():
 	emit_signal("abort_clicked")
 
@@ -51,8 +56,11 @@ func _ready():
 		parachute_gadget.hide()
 	if not State.has_slingshot:
 		slingshot_gadget.hide()
+	if not State.has_griffin:
+		griffin_gadget.hide()
 	
 	hide_landmark()
 
 	var _ignore = parachute_gadget.connect("parachute_deployed_via_click", self, "propagate_parachute_deploy")
+	_ignore = griffin_gadget.connect("griffin_deployed_via_click", self, "propagate_griffin_deploy")
 	_ignore = abort_button.connect("pressed", self, "abort")

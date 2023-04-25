@@ -50,30 +50,30 @@ margin_right = 70.0
 margin_bottom = 49.0
 text = "Height"
 
-[node name="Parachute" parent="Grid" instance=ExtResource( 3 )]
+[node name="Oil" parent="Grid" instance=ExtResource( 3 )]
 margin_left = 94.0
 margin_top = 24.0
 margin_right = 164.0
 margin_bottom = 49.0
-text = "Parachute"
-KIND = "Parachute"
-
-[node name="Oil" parent="Grid" instance=ExtResource( 3 )]
-margin_top = 73.0
-margin_right = 70.0
-margin_bottom = 98.0
 text = "Oil"
 KIND = "Oil"
 
 [node name="Strength" parent="Grid" instance=ExtResource( 3 )]
-margin_left = 94.0
 margin_top = 73.0
-margin_right = 164.0
+margin_right = 70.0
 margin_bottom = 98.0
 text = "Strength"
 KIND = "Strength"
 
-[node name="PurchaseButton" type="Button" parent="Grid"]
+[node name="Parachute" parent="Grid" instance=ExtResource( 3 )]
+margin_left = 94.0
+margin_top = 73.0
+margin_right = 164.0
+margin_bottom = 98.0
+text = "Parachute"
+KIND = "Parachute"
+
+[node name="Slingshot" type="Button" parent="Grid"]
 margin_top = 122.0
 margin_right = 70.0
 margin_bottom = 147.0
@@ -84,6 +84,19 @@ enabled_focus_mode = 0
 text = "Slingshot"
 script = ExtResource( 4 )
 KIND = "Slingshot"
+
+[node name="Griffin" type="Button" parent="Grid"]
+margin_left = 94.0
+margin_top = 122.0
+margin_right = 164.0
+margin_bottom = 147.0
+rect_min_size = Vector2( 70, 25 )
+focus_mode = 0
+theme = ExtResource( 2 )
+enabled_focus_mode = 0
+text = "Griffin"
+script = ExtResource( 4 )
+KIND = "Griffin"
 
 [node name="Info" parent="." instance=ExtResource( 6 )]
 margin_left = 240.0

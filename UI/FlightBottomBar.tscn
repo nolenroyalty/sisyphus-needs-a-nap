@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://UI/FlightBottomBar.gd" type="Script" id=1]
 [ext_resource path="res://UI/Sprites/ArrowRight.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://UI/SlingshotIcon.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Fonts/HelvetiPixel.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://UI/Resources/NinepatchStyle.tres" type="StyleBox" id=6]
+[ext_resource path="res://UI/GriffinIcon.tscn" type="PackedScene" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 size = 6
@@ -39,9 +40,13 @@ custom_constants/separation = 46
 
 [node name="ParachuteIcon" parent="Gadgets" instance=ExtResource( 3 )]
 
-[node name="SlingshotIcon" parent="Gadgets" instance=ExtResource( 4 )]
+[node name="GriffinIcon" parent="Gadgets" instance=ExtResource( 7 )]
 margin_left = 46.0
 margin_right = 46.0
+
+[node name="SlingshotIcon" parent="Gadgets" instance=ExtResource( 4 )]
+margin_left = 92.0
+margin_right = 92.0
 
 [node name="AbortButton" type="Button" parent="."]
 modulate = Color( 1, 1, 1, 0.607843 )

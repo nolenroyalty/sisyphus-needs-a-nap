@@ -140,6 +140,7 @@ func _ready():
 	flightscore = FlightScore.new(boulder)
 	var _ignore = scoreScreen.connect("continue_pressed", self, "continue_pressed")
 	_ignore = bottom_bar.connect("parachute_deployed_via_click", self, "try_to_deploy_parachute_from_bottom_bar")
+	_ignore = bottom_bar.connect("griffin_deployed_via_click", self, "try_to_deploy_griffin_from_bottom_bar")
 	_ignore = bottom_bar.connect("abort_clicked", self, "handle_abort")
 	_ignore = boulder.connect("boulder_clicked", self, "handle_boulder_clicked")
 	_ignore = text_display.connect("no_facts_are_displayed", self, "handle_fact_display_gone")
@@ -310,6 +311,13 @@ func try_to_deploy_parachute_from_bottom_bar():
 		if launch_state == LAUNCH_STATE.LAUNCHED:
 			print("Probable bug - tried to deploy parachute from bottom bar but it isn't availble!")
 
+func try_to_deploy_griffin_from_bottom_bar():
+	if can_deploy_griffin():
+		deploy_griffin()
+	else:
+		if launch_state == LAUNCH_STATE.LAUNCHED:
+			print("Probable bug - tried to deploy griffin from bottom bar but it isn't availble!")
+
 func landmark_to_display():
 	var boulder_position = boulder.global_position
 
@@ -389,6 +397,7 @@ func process_griffin(delta):
 	velocity += GRIFFIN_BOOST * delta
 	boulder.move_and_collide(velocity * delta)
 	bottom_bar.maybe_update_speed_and_height(velocity.length(), boulder.determine_height_above_ground())
+	maybe_display_landmark()
  
 func _physics_process(delta):
 	match launch_state:
