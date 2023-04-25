@@ -13,12 +13,13 @@ enum ACHIEVEMENTS {
 	INTO_LAVA,
 	PASSED_LAVA,
 	PASSED_BIG_SLOPE,
-    NAP_ACHIEVED 
+    NAP_NIRVANA 
 }
 
 enum ACHIEVEMENT_STATE { NOT_YET_ACHIEVED, JUST_ACHIEVED, ALREADY_ACHIEVED }
 
-const WINNING_DURATION_IN_SECONDS = 60
+const LITTLE_REST_SECONDS = 20
+const WINNING_DURATION_IN_SECONDS = 55
 
 var rest = 0
 var block_height : int = 0
@@ -96,15 +97,15 @@ func achievement_text(achievement):
 			return "Longer Distance"
 		ACHIEVEMENTS.PASSED_BIG_SLOPE:
 			return "That Was Tall"
-		ACHIEVEMENTS.NAP_ACHIEVED:
-			return "Nap Achieved"
+		ACHIEVEMENTS.NAP_NIRVANA:
+			return "Nap Nirvana"
 		_:
 			print("ERROR: unknown achievement: " + str(achievement))
 
 func achievement_description(achievement):
 	match achievement:
 		ACHIEVEMENTS.A_LITTLE_REST:
-			return "Achieve a launch duration of at least 15 seconds"
+			return "Achieve a launch duration of at least %s seconds" % LITTLE_REST_SECONDS
 		ACHIEVEMENTS.INTO_CAVE:
 			return "Enter the cave"
 		ACHIEVEMENTS.CAVE_BOTTOM:
@@ -117,7 +118,7 @@ func achievement_description(achievement):
 			return "Make it past the lava pit"
 		ACHIEVEMENTS.PASSED_BIG_SLOPE:
 			return "Make it past the big slope"
-		ACHIEVEMENTS.NAP_ACHIEVED:
+		ACHIEVEMENTS.NAP_NIRVANA:
 			return "Achieve a launch duration of at least %s seconds" % WINNING_DURATION_IN_SECONDS
 		_:
 			print("ERROR: unknown achievement: " + str(achievement))
@@ -139,7 +140,7 @@ func achievement_reward(achievement):
 			return 1000
 		ACHIEVEMENTS.PASSED_BIG_SLOPE:
 			return 2300
-		ACHIEVEMENTS.NAP_ACHIEVED:
+		ACHIEVEMENTS.NAP_NIRVANA:
 			return 42069
 		_:
 			print("ERROR: unknown achievement: " + str(achievement))

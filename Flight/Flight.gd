@@ -71,20 +71,24 @@ func calculate_gravity():
 func calculate_starting_velocity():
 	var starting_velocity = DEFAULT_STARTING_VELOCITY
 	var multiplier = 1
-	var variance = rng.randfn(0, 0.1)
-
+	var variance_base = 0.12
+	
 	match State.strength_level:
-		0: multiplier = 1.0
-		1: multiplier = 1.35
+		0: 
+			variance_base = 0.05
+			multiplier = 1.0
+		1: 
+			variance_base = 0.09
+			multiplier = 1.35
 		2: multiplier = 1.7
-		3: multiplier = 1.9
-		4: multiplier = 2.1
-		5: multiplier = 2.25
+		3: multiplier = 1.85
+		4: multiplier = 2.0
+		5: multiplier = 2.2
 		6: multiplier = 2.6
 		_:
 			print("Unknown strength level %d" % State.strength_level)
 	
-	
+	var variance = rng.randfn(0, variance_base)
 	starting_velocity *= multiplier
 	print("velocity: %s variance: %s -> %s" % [starting_velocity, variance, starting_velocity * variance])
 	starting_velocity += starting_velocity * variance
@@ -245,7 +249,7 @@ func should_freeze_after_this_bounce():
 	else:
 		consecutive_downhill_bounces = 0
 	
-	if is_cave_bounce():
+	if is_cave_bounce() and is_slow_bounce():
 		consecutive_cave_bounces += 1
 	else:
 		consecutive_cave_bounces = 0

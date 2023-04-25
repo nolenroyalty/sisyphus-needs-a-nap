@@ -155,49 +155,49 @@ position = Vector2( 8259, -537 )
 position = Vector2( 8448, -1112 )
 
 [node name="Moderate8" parent="Terrain" instance=ExtResource( 8 )]
-position = Vector2( 9663, -1191 )
+position = Vector2( 9781, -1414 )
 
 [node name="Steep8" parent="Terrain" instance=ExtResource( 11 )]
-position = Vector2( 10047, -1286 )
+position = Vector2( 10165, -1509 )
 
 [node name="Steep7" parent="Terrain" instance=ExtResource( 11 )]
-position = Vector2( 8896, -1065 )
+position = Vector2( 9014, -1288 )
 
 [node name="Moderate9" parent="Terrain" instance=ExtResource( 8 )]
-position = Vector2( 9280, -1128 )
+position = Vector2( 9398, -1351 )
 
 [node name="Steep9" parent="Terrain" instance=ExtResource( 11 )]
-position = Vector2( 10430, -1381 )
+position = Vector2( 10548, -1604 )
 
 [node name="Steep12" parent="Terrain" instance=ExtResource( 11 )]
-position = Vector2( 11577, -1666 )
+position = Vector2( 11695, -1889 )
 
 [node name="Steep11" parent="Terrain" instance=ExtResource( 11 )]
-position = Vector2( 11195, -1571 )
+position = Vector2( 11313, -1794 )
 
 [node name="Steep10" parent="Terrain" instance=ExtResource( 11 )]
-position = Vector2( 10812, -1476 )
+position = Vector2( 10930, -1699 )
 
 [node name="Steep13" parent="Terrain" instance=ExtResource( 11 )]
-position = Vector2( 11960, -1761 )
+position = Vector2( 12078, -1984 )
 
 [node name="Steep14" parent="Terrain" instance=ExtResource( 11 )]
-position = Vector2( 12342, -1856 )
+position = Vector2( 12460, -2079 )
 
 [node name="Steep15" parent="Terrain" instance=ExtResource( 11 )]
-position = Vector2( 12725, -1951 )
+position = Vector2( 12843, -2174 )
 
 [node name="Moderate10" parent="Terrain" instance=ExtResource( 8 )]
-position = Vector2( 13108, -2014 )
+position = Vector2( 13226, -2237 )
 
 [node name="Steep16" parent="Terrain" instance=ExtResource( 11 )]
-position = Vector2( 13491, -2109 )
+position = Vector2( 13609, -2332 )
 
 [node name="EndingSlope" parent="Terrain" instance=ExtResource( 16 )]
-position = Vector2( 13810, -2686 )
+position = Vector2( 13928, -2909 )
 
 [node name="EndingSlope2" parent="Terrain" instance=ExtResource( 16 )]
-position = Vector2( 14062, -3713 )
+position = Vector2( 14180, -3936 )
 
 [node name="EndingSlope3" parent="Terrain" instance=ExtResource( 16 )]
 position = Vector2( 14317, -4741 )
@@ -331,10 +331,24 @@ margin_bottom = -387.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect18" type="ColorRect" parent="Filler"]
-margin_left = 8703.0
-margin_top = -1009.0
-margin_right = 19203.0
-margin_bottom = -795.0
+margin_left = 8821.0
+margin_top = -1232.0
+margin_right = 19321.0
+margin_bottom = -1018.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect35" type="ColorRect" parent="Filler"]
+margin_left = 8699.0
+margin_top = -953.0
+margin_right = 19199.0
+margin_bottom = -739.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect36" type="ColorRect" parent="Filler"]
+margin_left = 8794.0
+margin_top = -1051.0
+margin_right = 19294.0
+margin_bottom = -837.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect32" type="ColorRect" parent="Filler"]
@@ -345,101 +359,101 @@ margin_bottom = -582.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect19" type="ColorRect" parent="Filler"]
-margin_left = 9085.0
-margin_top = -1087.0
-margin_right = 19585.0
-margin_bottom = -873.0
+margin_left = 9203.0
+margin_top = -1310.0
+margin_right = 19703.0
+margin_bottom = -1096.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect20" type="ColorRect" parent="Filler"]
-margin_left = 9449.0
-margin_top = -1141.0
-margin_right = 19949.0
-margin_bottom = -927.0
+margin_left = 9567.0
+margin_top = -1364.0
+margin_right = 20067.0
+margin_bottom = -1150.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect21" type="ColorRect" parent="Filler"]
-margin_left = 9852.0
-margin_top = -1234.0
-margin_right = 20352.0
-margin_bottom = -1020.0
+margin_left = 9970.0
+margin_top = -1457.0
+margin_right = 20470.0
+margin_bottom = -1243.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect22" type="ColorRect" parent="Filler"]
-margin_left = 10230.0
-margin_top = -1331.0
-margin_right = 20730.0
-margin_bottom = -1117.0
+margin_left = 10348.0
+margin_top = -1554.0
+margin_right = 20848.0
+margin_bottom = -1340.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect23" type="ColorRect" parent="Filler"]
-margin_left = 10606.0
-margin_top = -1424.0
-margin_right = 21106.0
-margin_bottom = -1210.0
+margin_left = 10724.0
+margin_top = -1647.0
+margin_right = 21224.0
+margin_bottom = -1433.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect24" type="ColorRect" parent="Filler"]
-margin_left = 10999.0
-margin_top = -1518.0
-margin_right = 21499.0
-margin_bottom = -1304.0
+margin_left = 11117.0
+margin_top = -1741.0
+margin_right = 21617.0
+margin_bottom = -1527.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect25" type="ColorRect" parent="Filler"]
-margin_left = 11374.0
-margin_top = -1614.0
-margin_right = 21874.0
-margin_bottom = -1400.0
+margin_left = 11492.0
+margin_top = -1837.0
+margin_right = 21992.0
+margin_bottom = -1623.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect26" type="ColorRect" parent="Filler"]
-margin_left = 11762.0
-margin_top = -1715.0
-margin_right = 22262.0
-margin_bottom = -1501.0
+margin_left = 11880.0
+margin_top = -1938.0
+margin_right = 22380.0
+margin_bottom = -1724.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect27" type="ColorRect" parent="Filler"]
-margin_left = 12143.0
-margin_top = -1802.0
-margin_right = 22643.0
-margin_bottom = -1588.0
+margin_left = 12261.0
+margin_top = -2025.0
+margin_right = 22761.0
+margin_bottom = -1811.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect28" type="ColorRect" parent="Filler"]
-margin_left = 12509.0
-margin_top = -1898.0
-margin_right = 23009.0
-margin_bottom = -1684.0
+margin_left = 12627.0
+margin_top = -2121.0
+margin_right = 23127.0
+margin_bottom = -1907.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect29" type="ColorRect" parent="Filler"]
-margin_left = 12908.0
-margin_top = -1961.0
-margin_right = 23408.0
-margin_bottom = -1747.0
+margin_left = 13026.0
+margin_top = -2184.0
+margin_right = 23526.0
+margin_bottom = -1970.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect30" type="ColorRect" parent="Filler"]
-margin_left = 13293.0
-margin_top = -2051.0
-margin_right = 23793.0
-margin_bottom = -1837.0
+margin_left = 13411.0
+margin_top = -2274.0
+margin_right = 23911.0
+margin_bottom = -2060.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect31" type="ColorRect" parent="Filler"]
-margin_left = 13683.0
-margin_top = -2173.0
-margin_right = 24183.0
-margin_bottom = -1959.0
+margin_left = 13801.0
+margin_top = -2396.0
+margin_right = 24301.0
+margin_bottom = -2182.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect33" type="ColorRect" parent="Filler"]
-margin_left = 13934.0
-margin_top = -3199.0
-margin_right = 14434.0
-margin_bottom = -2135.0
+margin_left = 14052.0
+margin_top = -3422.0
+margin_right = 14552.0
+margin_bottom = -2358.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect2" type="ColorRect" parent="Filler"]

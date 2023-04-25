@@ -14,15 +14,27 @@ script = ExtResource( 2 )
 texture = ExtResource( 1 )
 centered = false
 
+[node name="Sprite2" type="Sprite" parent="."]
+position = Vector2( 119, -223 )
+texture = ExtResource( 1 )
+centered = false
+
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 polygon = PoolVector2Array( 2, 511, 222, 95, 256, 78, 256, 512 )
 
 [node name="LandmarkAnchor" type="Node2D" parent="."]
 position = Vector2( 30, 460 )
 
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="."]
+position = Vector2( 118.2, -222.8 )
+polygon = PoolVector2Array( 2, 511, 222, 95, 256, 78, 256, 512 )
+
+[node name="LandmarkAnchor2" type="Node2D" parent="."]
+position = Vector2( 148.2, 237.2 )
+
 [node name="PassedSlope" type="Area2D" parent="."]
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PassedSlope"]
-position = Vector2( 1506, -6069 )
+position = Vector2( 1626, -6054 )
 shape = SubResource( 1 )

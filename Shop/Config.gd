@@ -2,18 +2,20 @@ extends Node
 
 enum ITEM { BLOCK = 1, PARACHUTE = 2, OIL = 3, STRENGTH = 4, SLINGSHOT = 5, GRIFFIN = 6}
 
-const MAX_BLOCK_HEIGHT = 12
+const MAX_BLOCK_HEIGHT = 14
 const MAX_OIL_LEVEL = 3
 const MAX_STRENGTH_LEVEL = 6
 
+# Learn to fly has each level approximately double, but with substantial jitter
+# so that this isn't super obvious.  This is probably the best fit for 'strength'
+# for us; we want block height to be a little more attainable.
+
 static func next_block_cost():
-	# Learn to fly has each level approximately double, but with substantial jitter
-	# so that this isn't super obvious
 	match State.block_height:
 		0: return 60
 		1: return 90
-		2: return 150
-		3: return 300
+		2: return 125
+		3: return 270
 		4: return 400
 		5: return 500
 		6: return 675
@@ -22,7 +24,9 @@ static func next_block_cost():
 		9: return 850
 		10: return 900
 		11: return 1050
-		12: return 0
+		12: return 1100
+		13: return 1200
+		14: return 0
 		_:
 			print("unexpected current block height")
 			return 0
