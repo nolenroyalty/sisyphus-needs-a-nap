@@ -27,9 +27,15 @@ func tick(boulder : Boulder):
 	# This should clearly not be hardcoded, but meh
 	if duration_in_frames == LITTLE_REST_ACHIEVEMENT_DURATION:
 		State.achieve_if_we_havent_yet(State.ACHIEVEMENTS.A_LITTLE_REST)
+	
+	if duration_in_frames == 60 * State.WINNING_DURATION_IN_SECONDS:
+		State.achieve_if_we_havent_yet(State.ACHIEVEMENTS.NAP_ACHIEVED)
 
 func max_distance():
 	return (distance - starting_x)
+
+func current_distance(boulder):
+	return boulder.position.x - starting_x
 
 func max_height():
 	return height

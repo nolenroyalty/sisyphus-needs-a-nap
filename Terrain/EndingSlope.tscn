@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Terrain/Sprites/endingslope.png" type="Texture" id=1]
 
-[node name="EndingSlope" type="RigidBody2D"]
+[node name="EndingSlope" type="StaticBody2D"]
 collision_layer = 2
 
 [node name="Sprite" type="Sprite" parent="."]

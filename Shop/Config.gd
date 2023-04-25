@@ -28,6 +28,7 @@ static func next_strength_cost():
 		0: return 100
 		1: return 450
 		2: return 1050
+		3: return 0
 		_:
 			print("unexpected current strength")
 			return 0
@@ -37,6 +38,7 @@ static func next_oil_cost():
 		0: return 40
 		1: return 250
 		2: return 500
+		3: return 0
 		_:
 			print("unexpected current oil level")
 			return 0
@@ -45,13 +47,12 @@ static func next_oil_description():
 	match State.oil_level:
 		0: return "Don't lose any speed on your first bounce"
 		1: return "Don't lose any speed on your first 2 bounces"
-		2: return "Don't lose any speed on your first 3 bounces"
-		3: return "No more upgrades available"
+		2, 3: return "Don't lose any speed on your first 3 bounces"
 		_:
 			print("unexpected current oil level")
 			return "Oiliness: 0"
 
-static func description(kind) -> String:
+static func _description(kind) -> String:
 	match kind:
 		ITEM.BLOCK:
 			return "Launching the boulder from a higher height means it goes farther, right?"
@@ -67,6 +68,13 @@ static func description(kind) -> String:
 			return "Deploy with '2'. Hire a griffin to carry your boulder up the hill for a bit."
 		_:
 			return "unknown"
+
+static func description(kind):
+	var base = _description(kind)
+	if not_at_max_level(kind):
+		return base
+	else:
+		return "You've maxed out this upgrade!\n\n%s" % base
 
 static func max_level (kind) -> int:
 	match kind:
@@ -127,13 +135,22 @@ static func cost(kind) -> int:
 static func name(kind) -> String:
 	match kind:
 		ITEM.BLOCK:
-			return "Height: %d" % next_level(kind)
+			if not_at_max_level(kind):
+				return "Height: %d" % next_level(kind)
+			else:
+				return "Height"
 		ITEM.PARACHUTE:
 			return "Parachute"
 		ITEM.OIL:
-			return "Oiliness: %d" % next_level(kind)
+			if not_at_max_level(kind):
+				return "Oiliness: %d" % next_level(kind)
+			else:
+				return "Oiliness"
 		ITEM.STRENGTH:
-			return "Strength: %d" % next_level(kind)
+			if not_at_max_level(kind):
+				return "Strength: %d" % next_level(kind)
+			else:
+				return "Strength"
 		ITEM.SLINGSHOT:
 			return "Slingshot"
 		ITEM.GRIFFIN:

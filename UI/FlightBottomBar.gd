@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+# This is really a general purpose hud, but here we are
+
 class_name FlightBottomBar
 
 signal parachute_deployed_via_click
@@ -33,6 +35,9 @@ func hide_landmark():
 func deploy_parachute():
 	parachute_gadget.disabled()
 
+func deploy_griffin():
+	griffin_gadget.disabled()
+
 func propagate_parachute_deploy():
 	emit_signal("parachute_deployed_via_click")
 
@@ -45,11 +50,12 @@ func abort():
 func set_slingshot_ammo(ammo):
 	slingshot_gadget.set_ammo(ammo)
 
-func maybe_update_speed_and_height(speed, height):
+func maybe_update_stats(distance, height, duration):
 	frame_count += 1
 	if frame_count % 5 == 0:
 		# Subtract the boulder's height for display purposes.
-		$SpeedHeight/Values.text = "%s\n%s" % [int(speed), int(height) - 15]
+		# Like with scoring, we divide the boulder's distance by 10 for display purposes
+		$Stats/Values.text = "%s\n%s\n%.1f" % [int(distance / 10.0), int(height) - 15, duration]
 
 func _ready():
 	if not State.has_parachute:

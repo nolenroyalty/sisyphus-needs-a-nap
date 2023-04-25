@@ -12,6 +12,8 @@ func fade_away():
 func init(achievement):
 	$AchievementCompleted.text = "'%s' Completed!" % State.achievement_text(achievement)
 	$Accomplishment.text = State.achievement_description(achievement)
+	if achievement == State.ACHIEVEMENTS.NAP_ACHIEVED:
+		$Accomplishment.text = "You took a nap! This is the end of the game, but you can keep playing if you want."
 	$Reward.text = "Reward: %s rest" % State.achievement_reward(achievement)
 
 func _ready():

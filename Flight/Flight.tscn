@@ -30,7 +30,7 @@ __meta__ = {
 [node name="TextDisplay" parent="." instance=ExtResource( 17 )]
 
 [node name="Boulder" parent="." instance=ExtResource( 2 )]
-position = Vector2( -1229, 448 )
+position = Vector2( -1231, 449 )
 
 [node name="Camera2D" type="Camera2D" parent="Boulder"]
 position = Vector2( 1, 2 )
@@ -195,6 +195,27 @@ position = Vector2( 13491, -2109 )
 
 [node name="EndingSlope" parent="Terrain" instance=ExtResource( 16 )]
 position = Vector2( 13810, -2686 )
+
+[node name="EndingSlope2" parent="Terrain" instance=ExtResource( 16 )]
+position = Vector2( 14062, -3713 )
+
+[node name="EndingSlope3" parent="Terrain" instance=ExtResource( 16 )]
+position = Vector2( 14317, -4741 )
+
+[node name="EndingSlope4" parent="Terrain" instance=ExtResource( 16 )]
+position = Vector2( 14570, -5768 )
+
+[node name="EndingSlope5" parent="Terrain" instance=ExtResource( 16 )]
+position = Vector2( 14822, -6795 )
+
+[node name="EndingSlope6" parent="Terrain" instance=ExtResource( 16 )]
+position = Vector2( 15075, -7823 )
+
+[node name="EndingSlope7" parent="Terrain" instance=ExtResource( 16 )]
+position = Vector2( 15327, -8850 )
+
+[node name="EndingSlope8" parent="Terrain" instance=ExtResource( 16 )]
+position = Vector2( 15579, -9877 )
 
 [node name="Filler" type="Node2D" parent="."]
 

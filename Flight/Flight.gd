@@ -299,10 +299,12 @@ func can_deploy_griffin():
 func deploy_griffin():
 	griffin_deployed = true
 	launch_state = LAUNCH_STATE.GRIFFIN_DEPLOYED
+	bottom_bar.deploy_griffin()
 	boulder.show_griffin()
 	yield(get_tree().create_timer(GRIFFIN_DEPLOY_TIME), "timeout")
 	boulder.hide_griffin()
 	launch_state = LAUNCH_STATE.LAUNCHED
+
 
 func try_to_deploy_parachute_from_bottom_bar():
 	if can_deploy_parachute():
@@ -368,6 +370,12 @@ func launch_boulder():
 	velocity = calculate_starting_velocity()
 	play_sound(SOUNDS.LAUNCH)
 
+func maybe_tick_hud():
+	bottom_bar.maybe_update_stats(
+		flightscore.current_distance(boulder),
+		boulder.determine_height_above_ground(),
+		flightscore.duration())
+
 func process_launched(delta):
 	if Input.is_action_just_pressed("superbounce"): handle_superbounce_pressed()
 	if Input.is_action_just_pressed("deploy_parachute") and can_deploy_parachute():
@@ -379,8 +387,8 @@ func process_launched(delta):
 	flightscore.tick(boulder)
 	maybe_display_landmark()
 	rotate_boulder()
-	bottom_bar.maybe_update_speed_and_height(velocity.x, boulder.determine_height_above_ground())
-
+	maybe_tick_hud()
+  
 	var collision = boulder.move_and_collide(velocity * delta)
 	if collision:
 		var superbounced = is_superbouncing()
@@ -396,7 +404,7 @@ func process_launched(delta):
 func process_griffin(delta):
 	velocity += GRIFFIN_BOOST * delta
 	boulder.move_and_collide(velocity * delta)
-	bottom_bar.maybe_update_speed_and_height(velocity.length(), boulder.determine_height_above_ground())
+	maybe_tick_hud()
 	maybe_display_landmark()
  
 func _physics_process(delta):
