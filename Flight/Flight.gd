@@ -179,11 +179,11 @@ func play_sound(sound):
 	# Maybe the bounce stuff here should live in the boulder scene idk.
 	# Probably doesn't matter.
 	var stream = null
-	var volume_db = 0
+	var volume_db = -20.0
 	match sound:
 		SOUNDS.LAUNCH: 
 			stream = load("res://sounds/launch1.wav")
-			volume_db = -20.0
+			volume_db = -25.0
 		SOUNDS.BOUNCE: stream = load("res://sounds/bounce1.wav")
 		SOUNDS.SUPERBOUNCE: stream = load("res://sounds/super1.wav")
 		SOUNDS.PARACHUTE: stream = load("res://sounds/parachute1.wav")
