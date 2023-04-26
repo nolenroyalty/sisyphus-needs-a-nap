@@ -13,7 +13,7 @@ enum ACHIEVEMENTS {
 	INTO_LAVA,
 	PASSED_LAVA,
 	PASSED_BIG_SLOPE,
-    NAP_NIRVANA 
+	NAP_NIRVANA 
 }
 
 enum ACHIEVEMENT_STATE { NOT_YET_ACHIEVED, JUST_ACHIEVED, ALREADY_ACHIEVED }
@@ -29,7 +29,7 @@ var has_slingshot = false
 var has_griffin = false
 var strength_level = 0
 var launch_day = 1
-var testing_level = 1
+var testing_level = 0
 
 var fact_state = {}
 var achievement_state = {}
