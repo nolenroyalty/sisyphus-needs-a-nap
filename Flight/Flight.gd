@@ -321,6 +321,9 @@ func can_deploy_griffin():
 	return State.has_griffin and !griffin_deployed and launch_state == LAUNCH_STATE.LAUNCHED
 
 func deploy_griffin():
+	if velocity.y > 0:
+		velocity.y = 0
+		
 	griffin_deployed = true
 	launch_state = LAUNCH_STATE.GRIFFIN_DEPLOYED
 	bottom_bar.deploy_griffin()
