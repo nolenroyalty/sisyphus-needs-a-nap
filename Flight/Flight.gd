@@ -32,13 +32,13 @@ const SLINGSHOT_AMMO = 4
 const FRAMES_TO_SPEND_IN_LAVA = 60 * 2
 const GRIFFIN_DEPLOY_TIME = 1.5
 
-const SOUND_LAUNCH = preload("res://sounds/launch1.wav")
-const SOUND_BOUNCE = preload("res://sounds/bounce1.wav")
-const SOUND_SUPERBOUNCE = preload("res://sounds/super1.wav")
-const SOUND_PARACHUTE = preload("res://sounds/parachute1.wav")
-const SOUND_SLINGSHOT = preload("res://sounds/slingshot1.wav")
-const SOUND_LAVA = preload("res://sounds/lava1.wav")
-const SOUND_GRIFFIN = preload("res://sounds/griffin1.wav")
+const SOUND_LAUNCH = preload("res://Sounds/launch1.wav")
+const SOUND_BOUNCE = preload("res://Sounds/bounce1.wav")
+const SOUND_SUPERBOUNCE = preload("res://Sounds/super1.wav")
+const SOUND_PARACHUTE = preload("res://Sounds/parachute1.wav")
+const SOUND_SLINGSHOT = preload("res://Sounds/slingshot1.wav")
+const SOUND_LAVA = preload("res://Sounds/lava1.wav")
+const SOUND_GRIFFIN = preload("res://Sounds/griffin1.wav")
 
 onready var boulder = $Boulder
 onready var scoreScreen = $ScoreScreen
