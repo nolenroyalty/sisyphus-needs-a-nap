@@ -237,6 +237,34 @@ scale = Vector2( -1, 1 )
 position = Vector2( -2656, -4197 )
 scale = Vector2( -1, 1 )
 
+[node name="EndingSlopeBack6" parent="Terrain" instance=ExtResource( 16 )]
+position = Vector2( -2909, -5225 )
+scale = Vector2( -1, 1 )
+
+[node name="EndingSlopeBack7" parent="Terrain" instance=ExtResource( 16 )]
+position = Vector2( -3164, -6252 )
+scale = Vector2( -1, 1 )
+
+[node name="EndingSlopeBack8" parent="Terrain" instance=ExtResource( 16 )]
+position = Vector2( -3416, -7279 )
+scale = Vector2( -1, 1 )
+
+[node name="EndingSlopeBack9" parent="Terrain" instance=ExtResource( 16 )]
+position = Vector2( -3669, -8307 )
+scale = Vector2( -1, 1 )
+
+[node name="EndingSlopeBack10" parent="Terrain" instance=ExtResource( 16 )]
+position = Vector2( -3921, -9335 )
+scale = Vector2( -1, 1 )
+
+[node name="EndingSlopeBack11" parent="Terrain" instance=ExtResource( 16 )]
+position = Vector2( -4173, -10362 )
+scale = Vector2( -1, 1 )
+
+[node name="EndingSlopeBack12" parent="Terrain" instance=ExtResource( 16 )]
+position = Vector2( -4426, -11390 )
+scale = Vector2( -1, 1 )
+
 [node name="Filler" type="Node2D" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="Filler"]
@@ -251,6 +279,139 @@ margin_left = 142.0
 margin_top = 796.0
 margin_right = 3218.0
 margin_bottom = 1169.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect37" type="ColorRect" parent="Filler"]
+margin_left = -4595.0
+margin_top = 425.0
+margin_right = -1519.0
+margin_bottom = 798.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect38" type="ColorRect" parent="Filler"]
+margin_left = -3146.0
+margin_top = -603.0
+margin_right = -1775.0
+margin_bottom = 429.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect39" type="ColorRect" parent="Filler"]
+margin_left = -3399.0
+margin_top = -1629.0
+margin_right = -2028.0
+margin_bottom = -597.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect40" type="ColorRect" parent="Filler"]
+margin_left = -3651.0
+margin_top = -2656.0
+margin_right = -2280.0
+margin_bottom = -1624.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect41" type="ColorRect" parent="Filler"]
+margin_left = -3902.0
+margin_top = -3683.0
+margin_right = -2531.0
+margin_bottom = -2651.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect42" type="ColorRect" parent="Filler"]
+margin_left = -4155.0
+margin_top = -4709.0
+margin_right = -2784.0
+margin_bottom = -3677.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect50" type="ColorRect" parent="Filler"]
+margin_left = 14307.0
+margin_top = -4450.0
+margin_right = 15678.0
+margin_bottom = -3418.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect53" type="ColorRect" parent="Filler"]
+margin_left = 14563.0
+margin_top = -5476.0
+margin_right = 15934.0
+margin_bottom = -4444.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect54" type="ColorRect" parent="Filler"]
+margin_left = 14816.0
+margin_top = -6505.0
+margin_right = 16187.0
+margin_bottom = -5473.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect51" type="ColorRect" parent="Filler"]
+margin_left = 15069.0
+margin_top = -7531.0
+margin_right = 16440.0
+margin_bottom = -6499.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect55" type="ColorRect" parent="Filler"]
+margin_left = 15321.0
+margin_top = -8558.0
+margin_right = 16692.0
+margin_bottom = -7526.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect56" type="ColorRect" parent="Filler"]
+margin_left = 15573.0
+margin_top = -9586.0
+margin_right = 16944.0
+margin_bottom = -8554.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect43" type="ColorRect" parent="Filler"]
+margin_left = -4407.0
+margin_top = -5736.0
+margin_right = -3036.0
+margin_bottom = -4704.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect44" type="ColorRect" parent="Filler"]
+margin_left = -4663.0
+margin_top = -6765.0
+margin_right = -3292.0
+margin_bottom = -5733.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect45" type="ColorRect" parent="Filler"]
+margin_left = -4916.0
+margin_top = -7791.0
+margin_right = -3545.0
+margin_bottom = -6759.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect46" type="ColorRect" parent="Filler"]
+margin_left = -5168.0
+margin_top = -8818.0
+margin_right = -3797.0
+margin_bottom = -7786.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect47" type="ColorRect" parent="Filler"]
+margin_left = -5419.0
+margin_top = -9845.0
+margin_right = -4048.0
+margin_bottom = -8813.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect48" type="ColorRect" parent="Filler"]
+margin_left = -5672.0
+margin_top = -10871.0
+margin_right = -4301.0
+margin_bottom = -9839.0
+color = Color( 0.262745, 0.196078, 0.14902, 1 )
+
+[node name="ColorRect49" type="ColorRect" parent="Filler"]
+margin_left = -5924.0
+margin_top = -11898.0
+margin_right = -4553.0
+margin_bottom = -10866.0
 color = Color( 0.262745, 0.196078, 0.14902, 1 )
 
 [node name="ColorRect7" type="ColorRect" parent="Filler"]
