@@ -6,7 +6,7 @@ enum STATE { DISPLAYING, WAITING, DONE }
 
 onready var audio = $AudioStreamPlayer
 onready var label = $Label
-var sound = load("res:///sounds/dialogue2.wav")
+var sound = preload("res:///Sounds/dialogue2.wav")
 var characters_per_second = 25
 var play_sound_every_n_characters = 3
 var end_of_dialogue_default_pause = 1.0
