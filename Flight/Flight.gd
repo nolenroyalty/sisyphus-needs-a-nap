@@ -32,6 +32,14 @@ const SLINGSHOT_AMMO = 4
 const FRAMES_TO_SPEND_IN_LAVA = 60 * 2
 const GRIFFIN_DEPLOY_TIME = 1.5
 
+const SOUND_LAUNCH = preload("res://sounds/launch1.wav")
+const SOUND_BOUNCE = preload("res://sounds/bounce1.wav")
+const SOUND_SUPERBOUNCE = preload("res://sounds/super1.wav")
+const SOUND_PARACHUTE = preload("res://sounds/parachute1.wav")
+const SOUND_SLINGSHOT = preload("res://sounds/slingshot1.wav")
+const SOUND_LAVA = preload("res://sounds/lava1.wav")
+const SOUND_GRIFFIN = preload("res://sounds/griffin1.wav")
+
 onready var boulder = $Boulder
 onready var scoreScreen = $ScoreScreen
 onready var text_display = $TextDisplay
@@ -179,17 +187,17 @@ func play_sound(sound):
 	# Maybe the bounce stuff here should live in the boulder scene idk.
 	# Probably doesn't matter.
 	var stream = null
-	var volume_db = -20.0
+	var volume_db = -7.5
 	match sound:
 		SOUNDS.LAUNCH: 
-			stream = load("res://sounds/launch1.wav")
-			volume_db = -25.0
-		SOUNDS.BOUNCE: stream = load("res://sounds/bounce1.wav")
-		SOUNDS.SUPERBOUNCE: stream = load("res://sounds/super1.wav")
-		SOUNDS.PARACHUTE: stream = load("res://sounds/parachute1.wav")
-		SOUNDS.SLINGSHOT: stream = load("res://sounds/slingshot1.wav")
-		SOUNDS.LAVA: stream = load("res://sounds/lava1.wav")
-		SOUNDS.GRIFFIN: stream = load("res://sounds/griffin1.wav")
+			stream = SOUND_LAUNCH
+			volume_db = -20.0
+		SOUNDS.BOUNCE: stream = SOUND_BOUNCE
+		SOUNDS.SUPERBOUNCE: stream = SOUND_SUPERBOUNCE
+		SOUNDS.PARACHUTE: stream = SOUND_PARACHUTE
+		SOUNDS.SLINGSHOT: stream = SOUND_SLINGSHOT
+		SOUNDS.LAVA: stream = SOUND_LAVA
+		SOUNDS.GRIFFIN: stream = SOUND_GRIFFIN
 		_: print("Unknown sound")
 		
 	if stream:
