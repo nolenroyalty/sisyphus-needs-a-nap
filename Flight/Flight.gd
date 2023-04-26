@@ -79,14 +79,11 @@ func calculate_gravity():
 func calculate_starting_velocity():
 	var starting_velocity = DEFAULT_STARTING_VELOCITY
 	var multiplier = 1
-	var variance_base = 0.12
 	
 	match State.strength_level:
-		0: 
-			variance_base = 0.05
+		0:  
 			multiplier = 1.0
 		1: 
-			variance_base = 0.09
 			multiplier = 1.35
 		2: multiplier = 1.7
 		3: multiplier = 1.85
@@ -96,7 +93,7 @@ func calculate_starting_velocity():
 		_:
 			print("Unknown strength level %d" % State.strength_level)
 	
-	var variance = rng.randfn(0, variance_base)
+	var variance = rng.randf_range(-.12, 0.12)
 	starting_velocity *= multiplier
 	print("velocity: %s variance: %s -> %s" % [starting_velocity, variance, starting_velocity * variance])
 	starting_velocity += starting_velocity * variance
