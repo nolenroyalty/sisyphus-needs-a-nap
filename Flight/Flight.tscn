@@ -200,22 +200,22 @@ position = Vector2( 13928, -2909 )
 position = Vector2( 14180, -3936 )
 
 [node name="EndingSlope3" parent="Terrain" instance=ExtResource( 16 )]
-position = Vector2( 14317, -4741 )
+position = Vector2( 14435, -4963 )
 
 [node name="EndingSlope4" parent="Terrain" instance=ExtResource( 16 )]
-position = Vector2( 14570, -5768 )
+position = Vector2( 14688, -5990 )
 
 [node name="EndingSlope5" parent="Terrain" instance=ExtResource( 16 )]
-position = Vector2( 14822, -6795 )
+position = Vector2( 14941, -7018 )
 
 [node name="EndingSlope6" parent="Terrain" instance=ExtResource( 16 )]
-position = Vector2( 15075, -7823 )
+position = Vector2( 15193, -8045 )
 
 [node name="EndingSlope7" parent="Terrain" instance=ExtResource( 16 )]
-position = Vector2( 15327, -8850 )
+position = Vector2( 15445, -9072 )
 
 [node name="EndingSlope8" parent="Terrain" instance=ExtResource( 16 )]
-position = Vector2( 15579, -9877 )
+position = Vector2( 15697, -10098 )
 
 [node name="EndingSlopeBack1" parent="Terrain" instance=ExtResource( 16 )]
 position = Vector2( -1648, -89 )
