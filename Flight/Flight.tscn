@@ -63,7 +63,7 @@ one_way_collision = true
 collision_layer = 2
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Launch/BackupZones"]
-polygon = PoolVector2Array( 764, 464, 764, 582, -89, 583, -85, 438, 0, 463, 735, 531, 738, 465 )
+polygon = PoolVector2Array( 764, 464, 764, 582, -89, 583, -85, 438, -22, 524, 738, 532, 738, 465 )
 
 [node name="Player" type="Sprite" parent="Launch"]
 position = Vector2( 251, 471 )
