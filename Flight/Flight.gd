@@ -11,7 +11,8 @@ export var MAX_GRAVITY = 300
 export var BOUNCE_PENALTY = 0.2
 
 export var BACKWARDS_ROLL_SPEED = 1.0
-export var DEFAULT_STARTING_VELOCITY = Vector2(250, -110)
+# export var DEFAULT_STARTING_VELOCITY = Vector2(250, -110)
+export var DEFAULT_STARTING_VELOCITY = Vector2.ZERO
 export var SUPERBOUNCE_FRAMES = 10
 export var MIN_ROTATION = 1.0
 export var MAX_ROTATION = 10.0
@@ -113,11 +114,14 @@ func exited_cave():
 	in_cave = false
 
 func handle_entered_lava():
+	if frames_in_lava == 0:
+		print("first frame of entering lava")
+		play_sound(SOUNDS.LAVA)
+	frames_in_lava += 1
 	print("handling entered lava")
 	launch_state = LAUNCH_STATE.IN_LAVA
-	frames_in_lava = 0
 	velocity = Vector2.ZERO
-	play_sound(SOUNDS.LAVA)
+	
 
 func freeze_and_display_scores(aborted):
 	launch_state = LAUNCH_STATE.FROZEN
@@ -139,9 +143,12 @@ func freeze_and_display_scores(aborted):
 	State.launch_day += 1
 
 func handle_abort():
-	if launch_state != LAUNCH_STATE.LAUNCHED: return
-	freeze_and_display_scores(true)
-
+	match launch_state:
+		LAUNCH_STATE.LAUNCHED, LAUNCH_STATE.IN_LAVA, LAUNCH_STATE.GRIFFIN_DEPLOYED:
+			freeze_and_display_scores(true)
+		LAUNCH_STATE.DISPLAYING_FACTS, LAUNCH_STATE.AWAITING_LAUNCH, LAUNCH_STATE.FROZEN:
+			pass
+		
 func handle_fact_display_gone():
 	launch_state = LAUNCH_STATE.AWAITING_LAUNCH
 	# If we just hide and show the achievement display the text for it doesn't
