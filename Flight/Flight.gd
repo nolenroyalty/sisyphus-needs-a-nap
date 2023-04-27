@@ -11,8 +11,7 @@ export var MAX_GRAVITY = 300
 export var BOUNCE_PENALTY = 0.2
 
 export var BACKWARDS_ROLL_SPEED = 1.0
-# export var DEFAULT_STARTING_VELOCITY = Vector2(250, -110)
-export var DEFAULT_STARTING_VELOCITY = Vector2.ZERO
+export var DEFAULT_STARTING_VELOCITY = Vector2(250, -110)
 export var SUPERBOUNCE_FRAMES = 10
 export var MIN_ROTATION = 1.0
 export var MAX_ROTATION = 10.0
@@ -180,7 +179,6 @@ func _ready():
 			terrain.connect("boulder_exited", self, "exited_cave")
 		
 		if terrain.is_in_group("lava"):
-			frames_in_lava = 0
 			terrain.connect("entered_lava", self, "handle_entered_lava")
 		
 		if terrain.is_in_group("landmark"):
