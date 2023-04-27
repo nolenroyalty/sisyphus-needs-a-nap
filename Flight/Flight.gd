@@ -180,12 +180,14 @@ func _ready():
 			terrain.connect("boulder_exited", self, "exited_cave")
 		
 		if terrain.is_in_group("lava"):
+			frames_in_lava = 0
 			terrain.connect("entered_lava", self, "handle_entered_lava")
 		
 		if terrain.is_in_group("landmark"):
 			landmarks.append(terrain)
 	
 	text_display.maybe_display_facts()
+
 
 func play_sound(sound):
 	# Maybe the bounce stuff here should live in the boulder scene idk.

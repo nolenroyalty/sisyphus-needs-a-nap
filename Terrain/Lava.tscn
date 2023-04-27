@@ -21,7 +21,7 @@ polygon = PoolVector2Array( 0, 80, 9, 80, 30, 86, 35, 103, 38, 113, 48, 121, 52,
 collision_layer = 0
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="LavaArea"]
-polygon = PoolVector2Array( 36, 98, 53, 93, 125, 95, 151, 98, 188, 95, 261, 98, 310, 96, 361, 96, 388, 101, 406, 97, 422, 98, 441, 95, 458, 96, 483, 96, 491, 93, 504, 96, 507, 99, 467, 122, 195, 126, 57, 127, 39, 113 )
+polygon = PoolVector2Array( 34, 98, 53, 93, 125, 95, 151, 98, 188, 95, 261, 98, 310, 96, 361, 96, 388, 101, 406, 97, 422, 98, 441, 95, 458, 96, 483, 96, 491, 93, 504, 96, 509, 99, 497, 109, 479, 118, 467, 123, 195, 126, 55, 127, 38, 113 )
 
 [node name="PastLavaArea" type="Area2D" parent="."]
 collision_layer = 0
